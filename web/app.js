@@ -41,6 +41,14 @@ const elements = {
     quizResults: null,
     quizScore: null,
     quizMessage: null,
+    // Transcript elements
+    transcriptControls: null,
+    showDutchButton: null,
+    showEnglishButton: null,
+    dutchTranscript: null,
+    englishTranscript: null,
+    dutchContent: null,
+    englishContent: null,
 };
 
 // Audio player
@@ -71,11 +79,22 @@ async function init() {
     elements.quizScore = document.getElementById('quiz-score');
     elements.quizMessage = document.getElementById('quiz-message');
 
+    // Transcript elements
+    elements.transcriptControls = document.getElementById('transcript-controls');
+    elements.showDutchButton = document.getElementById('show-dutch-button');
+    elements.showEnglishButton = document.getElementById('show-english-button');
+    elements.dutchTranscript = document.getElementById('dutch-transcript');
+    elements.englishTranscript = document.getElementById('english-transcript');
+    elements.dutchContent = document.getElementById('dutch-content');
+    elements.englishContent = document.getElementById('english-content');
+
     // Set up event listeners
     elements.playButton.addEventListener('click', handlePlay);
     elements.replayButton.addEventListener('click', handleReplay);
     elements.continueButton.addEventListener('click', handleContinue);
     elements.quizNextButton.addEventListener('click', handleNextQuestion);
+    elements.showDutchButton.addEventListener('click', toggleDutchTranscript);
+    elements.showEnglishButton.addEventListener('click', toggleEnglishTranscript);
 
     // Set up audio event listeners
     audio.addEventListener('ended', handleAudioEnded);
@@ -222,6 +241,12 @@ function handleAudioEnded() {
     } else {
         // Sequence complete
         state.isPlaying = false;
+
+        // Show transcript controls
+        elements.transcriptControls.style.display = 'flex';
+
+        // Enable replay button
+        elements.replayButton.disabled = false;
 
         // Check if quiz questions available
         if (state.quizQuestions && state.quizQuestions.length > 0) {
@@ -420,12 +445,108 @@ function showQuizResults() {
 }
 
 /**
- * Continue to next scenario (also hides quiz)
+ * Continue to next scenario (also hides quiz and transcripts)
  */
 async function handleContinue() {
-    // Hide quiz section
+    // Hide quiz section and transcripts
     elements.quizSection.style.display = 'none';
+    elements.transcriptControls.style.display = 'none';
+    elements.dutchTranscript.style.display = 'none';
+    elements.englishTranscript.style.display = 'none';
+    elements.showDutchButton.classList.remove('active');
+    elements.showEnglishButton.classList.remove('active');
+
     await loadNewScenario();
+}
+
+/**
+ * Toggle Dutch transcript visibility
+ */
+function toggleDutchTranscript() {
+    const isVisible = elements.dutchTranscript.style.display === 'block';
+
+    if (!isVisible) {
+        // Populate transcript if first time
+        if (!elements.dutchContent.innerHTML) {
+            populateDutchTranscript();
+        }
+        elements.dutchTranscript.style.display = 'block';
+        elements.showDutchButton.classList.add('active');
+        elements.showDutchButton.textContent = '📝 Hide Dutch Text';
+    } else {
+        elements.dutchTranscript.style.display = 'none';
+        elements.showDutchButton.classList.remove('active');
+        elements.showDutchButton.textContent = '📝 Show Dutch Text';
+    }
+}
+
+/**
+ * Toggle English transcript visibility
+ */
+function toggleEnglishTranscript() {
+    const isVisible = elements.englishTranscript.style.display === 'block';
+
+    if (!isVisible) {
+        // Populate transcript if first time
+        if (!elements.englishContent.innerHTML) {
+            populateEnglishTranscript();
+        }
+        elements.englishTranscript.style.display = 'block';
+        elements.showEnglishButton.classList.add('active');
+        elements.showEnglishButton.textContent = '📖 Hide English Translation';
+    } else {
+        elements.englishTranscript.style.display = 'none';
+        elements.showEnglishButton.classList.remove('active');
+        elements.showEnglishButton.textContent = '📖 Show English Translation';
+    }
+}
+
+/**
+ * Populate Dutch transcript
+ */
+function populateDutchTranscript() {
+    elements.dutchContent.innerHTML = '';
+
+    state.currentScript.dialogue.forEach((line) => {
+        const lineDiv = document.createElement('div');
+        lineDiv.className = 'transcript-line';
+
+        const speakerDiv = document.createElement('div');
+        speakerDiv.className = 'speaker';
+        speakerDiv.textContent = line.speaker + ':';
+
+        const textDiv = document.createElement('div');
+        textDiv.className = 'text';
+        textDiv.textContent = line.text;
+
+        lineDiv.appendChild(speakerDiv);
+        lineDiv.appendChild(textDiv);
+        elements.dutchContent.appendChild(lineDiv);
+    });
+}
+
+/**
+ * Populate English transcript
+ */
+function populateEnglishTranscript() {
+    elements.englishContent.innerHTML = '';
+
+    state.currentScript.dialogue.forEach((line) => {
+        const lineDiv = document.createElement('div');
+        lineDiv.className = 'transcript-line';
+
+        const speakerDiv = document.createElement('div');
+        speakerDiv.className = 'speaker';
+        speakerDiv.textContent = line.speaker + ':';
+
+        const textDiv = document.createElement('div');
+        textDiv.className = 'text';
+        textDiv.textContent = line.translation || '[Translation not available]';
+
+        lineDiv.appendChild(speakerDiv);
+        lineDiv.appendChild(textDiv);
+        elements.englishContent.appendChild(lineDiv);
+    });
 }
 
 // Initialize when DOM is ready

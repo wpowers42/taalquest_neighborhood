@@ -55,6 +55,7 @@ Requirements for dialogue:
 - Common everyday situations
 - Simple present tense, basic vocabulary
 - Natural but slow-paced conversation
+- Include English translation for each dialogue line
 
 Requirements for questions:
 - 3 multiple-choice questions testing comprehension
@@ -68,8 +69,8 @@ Return ONLY valid JSON:
   "situation": "brief scenario description",
   "characters": ["Name1", "Name2"],
   "dialogue": [
-    {{"speaker": "Name1", "text": "Dutch text here"}},
-    {{"speaker": "Name2", "text": "Dutch text here"}}
+    {{"speaker": "Name1", "text": "Dutch text here", "translation": "English translation here"}},
+    {{"speaker": "Name2", "text": "Dutch text here", "translation": "English translation here"}}
   ],
   "questions": [
     {{
