@@ -25,6 +25,7 @@ const state = {
     currentQuestionIndex: 0,
     quizScore: 0,
     quizAnswered: false,
+    quizShown: false,
 };
 
 // DOM elements
@@ -185,6 +186,7 @@ async function loadNewScenario() {
         state.currentQuestionIndex = 0;
         state.quizScore = 0;
         state.quizAnswered = false;
+        state.quizShown = false;
 
         console.log('Scenario generated:', data);
 
@@ -272,10 +274,10 @@ function handleAudioEnded() {
         // Enable replay button
         elements.replayButton.disabled = false;
 
-        // Check if quiz questions available
-        if (state.quizQuestions && state.quizQuestions.length > 0) {
+        // Check if quiz questions available and not yet shown
+        if (state.quizQuestions && state.quizQuestions.length > 0 && !state.quizShown) {
             showQuiz();
-        } else {
+        } else if (!state.quizShown) {
             setUIState('finished');
         }
 
@@ -351,6 +353,7 @@ function showQuiz() {
 
     state.currentQuestionIndex = 0;
     state.quizScore = 0;
+    state.quizShown = true;
 
     displayCurrentQuestion();
 }
