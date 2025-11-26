@@ -147,6 +147,8 @@ async function fetchLocations() {
  * Generate and load a new scenario
  */
 async function loadNewScenario() {
+    // Update location name to show loading state
+    elements.locationName.textContent = 'Generating new scenario...';
     setUIState('loading');
 
     try {
@@ -312,7 +314,11 @@ function setUIState(stateName, message = '') {
         case 'loading':
             elements.playButton.innerHTML = '<span class="button-icon">⏳</span><span class="button-text">Generating...</span>';
             elements.playButton.classList.add('loading');
-            elements.statusMessage.textContent = 'Creating your Dutch scenario...';
+            if (DEV_MODE) {
+                elements.statusMessage.textContent = 'Loading pregenerated scenario...';
+            } else {
+                elements.statusMessage.textContent = '✨ Creating your personalized Dutch dialogue... This may take a moment.';
+            }
             break;
 
         case 'ready':
