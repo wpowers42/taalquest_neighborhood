@@ -131,14 +131,22 @@ async function init() {
  * Fetch all available locations from API
  */
 async function fetchLocations() {
+    const startTime = performance.now();
+    console.log('📍 API Call: Fetching locations from /api/locations');
+
     try {
         const response = await fetch(`${API_BASE_URL}/api/locations`);
+        const fetchTime = performance.now() - startTime;
+        console.log(`✓ API Response received (${fetchTime.toFixed(0)}ms)`);
+
         if (!response.ok) throw new Error('Failed to fetch locations');
 
         state.locations = await response.json();
-        console.log(`Loaded ${state.locations.length} locations`);
+        const totalTime = performance.now() - startTime;
+        console.log(`✓ Loaded ${state.locations.length} locations (total: ${totalTime.toFixed(0)}ms)`);
     } catch (error) {
-        console.error('Error fetching locations:', error);
+        const totalTime = performance.now() - startTime;
+        console.error(`✗ Error fetching locations (${totalTime.toFixed(0)}ms):`, error);
         throw new Error('Could not load locations. Is the backend running?');
     }
 }
@@ -147,34 +155,55 @@ async function fetchLocations() {
  * Generate and load a new scenario
  */
 async function loadNewScenario() {
+    const startTime = performance.now();
+
     // Update location name to show loading state
     elements.locationName.textContent = 'Generating new scenario...';
     setUIState('loading');
 
     try {
         let response;
+        let endpoint;
 
         if (DEV_MODE) {
+            endpoint = '/api/dev-scenario';
+            console.log('🎬 API Call: Fetching pregenerated scenario from', endpoint);
+
             // Use pregenerated scenario for instant UI/UX testing
-            response = await fetch(`${API_BASE_URL}/api/dev-scenario`);
+            response = await fetch(`${API_BASE_URL}${endpoint}`);
         } else {
+            endpoint = '/api/generate-scenario';
+            console.log('🎬 API Call: Generating new scenario from', endpoint);
+            console.log('  → Calling OpenAI API to create dialogue...');
+            console.log('  → Generating speech audio via OpenAI TTS...');
+            console.log('  → This may take 10-30 seconds...');
+
             // Generate new scenario via OpenAI API
-            response = await fetch(`${API_BASE_URL}/api/generate-scenario`, {
+            const requestBody = {
+                exclude_location_id: state.lastLocationId,
+            };
+            console.log('  → Request body:', requestBody);
+
+            response = await fetch(`${API_BASE_URL}${endpoint}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    exclude_location_id: state.lastLocationId,
-                }),
+                body: JSON.stringify(requestBody),
             });
         }
+
+        const fetchTime = performance.now() - startTime;
+        console.log(`✓ API Response received from ${endpoint} (${fetchTime.toFixed(0)}ms)`);
 
         if (!response.ok) {
             throw new Error('Failed to generate scenario');
         }
 
+        console.log('  → Parsing JSON response...');
         const data = await response.json();
+        const parseTime = performance.now() - startTime;
+        console.log(`✓ JSON parsed (${(parseTime - fetchTime).toFixed(0)}ms)`);
 
         // Update state
         state.currentLocation = data.location;
@@ -190,14 +219,19 @@ async function loadNewScenario() {
         state.quizAnswered = false;
         state.quizShown = false;
 
-        console.log('Scenario generated:', data);
+        const totalTime = performance.now() - startTime;
+        console.log(`✓ Scenario ready: "${data.location.name}" (total: ${totalTime.toFixed(0)}ms)`);
+        console.log('  → Dialogue lines:', data.script.dialogue.length);
+        console.log('  → Audio files:', data.audio_files.length);
+        console.log('  → Quiz questions:', data.script.questions?.length || 0);
 
         // Update UI
         elements.locationName.textContent = data.location.name;
         setUIState('ready');
 
     } catch (error) {
-        console.error('Error loading scenario:', error);
+        const totalTime = performance.now() - startTime;
+        console.error(`✗ Error loading scenario (${totalTime.toFixed(0)}ms):`, error);
         setUIState('error', 'Failed to generate scenario. Please try again.');
     }
 }
@@ -210,6 +244,8 @@ function handlePlay() {
         return;
     }
 
+    console.log(`🔊 Starting audio playback sequence (${state.currentAudioFiles.length} files)`);
+
     state.isPlaying = true;
     state.currentAudioIndex = 0;
     setUIState('playing');
@@ -221,6 +257,7 @@ function handlePlay() {
  * Replay the current scenario
  */
 function handleReplay() {
+    console.log('🔁 Replaying audio sequence');
     handlePlay();
 }
 
@@ -242,11 +279,18 @@ function playCurrentAudio() {
     const filename = state.currentAudioFiles[state.currentAudioIndex];
     const audioUrl = `${API_BASE_URL}/api/audio/${filename}`;
 
-    console.log(`Playing audio ${state.currentAudioIndex + 1}/${state.currentAudioFiles.length}: ${filename}`);
+    console.log(`🔊 Audio [${state.currentAudioIndex + 1}/${state.currentAudioFiles.length}]: Fetching ${filename}`);
+    console.log(`  → URL: ${audioUrl}`);
+
+    const loadStartTime = performance.now();
 
     audio.src = audioUrl;
-    audio.play().catch(error => {
-        console.error('Error playing audio:', error);
+    audio.play().then(() => {
+        const loadTime = performance.now() - loadStartTime;
+        console.log(`  ✓ Audio started playing (load time: ${loadTime.toFixed(0)}ms)`);
+    }).catch(error => {
+        const loadTime = performance.now() - loadStartTime;
+        console.error(`  ✗ Audio playback failed (${loadTime.toFixed(0)}ms):`, error);
         setUIState('error', 'Audio playback failed');
         state.isPlaying = false;
     });
@@ -258,17 +302,22 @@ function playCurrentAudio() {
 function handleAudioEnded() {
     if (!state.isPlaying) return;
 
+    console.log(`  ✓ Audio [${state.currentAudioIndex + 1}/${state.currentAudioFiles.length}] finished`);
+
     state.currentAudioIndex++;
 
     // Check if more audio files to play
     if (state.currentAudioIndex < state.currentAudioFiles.length) {
         // Pause before next audio
+        console.log(`  ⏸ Pausing ${PAUSE_BETWEEN_AUDIO_MS}ms before next audio...`);
         setTimeout(() => {
             playCurrentAudio();
         }, PAUSE_BETWEEN_AUDIO_MS);
     } else {
         // Sequence complete
         state.isPlaying = false;
+
+        console.log('✓ Audio sequence completed - All files played successfully');
 
         // Show transcript controls
         elements.transcriptControls.style.display = 'flex';
@@ -278,12 +327,11 @@ function handleAudioEnded() {
 
         // Check if quiz questions available and not yet shown
         if (state.quizQuestions && state.quizQuestions.length > 0 && !state.quizShown) {
+            console.log('  → Showing quiz with', state.quizQuestions.length, 'questions');
             showQuiz();
         } else if (!state.quizShown) {
             setUIState('finished');
         }
-
-        console.log('Audio sequence completed');
     }
 }
 
@@ -488,6 +536,10 @@ async function handleContinue() {
     elements.englishTranscript.style.display = 'none';
     elements.showDutchButton.classList.remove('active');
     elements.showEnglishButton.classList.remove('active');
+
+    // Clear transcript content so it will be repopulated for the new scenario
+    elements.dutchContent.innerHTML = '';
+    elements.englishContent.innerHTML = '';
 
     await loadNewScenario();
 }
