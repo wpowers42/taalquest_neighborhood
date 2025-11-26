@@ -1,0 +1,93 @@
+{
+  "location": {
+    "id": "bakkerij_centrum",
+    "name": "Bakkerij De Gouden Korrel",
+    "type": "bakkerij",
+    "description": "A traditional Dutch bakery in the town center"
+  },
+  "script": {
+    "situation": "At a traditional bakery, a customer buys bread and asks for the price.",
+    "characters": [
+      "Sanne",
+      "Jeroen"
+    ],
+    "dialogue": [
+      {
+        "speaker": "Sanne",
+        "text": "Goedemorgen. Ik wil één brood, alstublieft.",
+        "translation": "Good morning. I want one loaf of bread, please.",
+        "voice_id": 0
+      },
+      {
+        "speaker": "Jeroen",
+        "text": "Goedemorgen. Wit brood of bruin brood?",
+        "translation": "Good morning. White bread or brown bread?",
+        "voice_id": 1
+      },
+      {
+        "speaker": "Sanne",
+        "text": "Bruin brood, alstublieft. Hoeveel kost het?",
+        "translation": "Brown bread, please. How much does it cost?",
+        "voice_id": 0
+      },
+      {
+        "speaker": "Jeroen",
+        "text": "Het kost twee euro vijftig.",
+        "translation": "It costs two euros fifty.",
+        "voice_id": 1
+      },
+      {
+        "speaker": "Sanne",
+        "text": "Oké, hier is drie euro.",
+        "translation": "Okay, here is three euros.",
+        "voice_id": 0
+      },
+      {
+        "speaker": "Jeroen",
+        "text": "Dank u wel. En hier is vijftig cent terug.",
+        "translation": "Thank you. And here is fifty cents back.",
+        "voice_id": 1
+      }
+    ],
+    "questions": [
+      {
+        "question": "Where are Sanne and Jeroen?",
+        "options": [
+          "In a bakery",
+          "In a supermarket",
+          "In a café",
+          "In a school"
+        ],
+        "correct_answer": 0
+      },
+      {
+        "question": "What kind of bread does Sanne want?",
+        "options": [
+          "White bread",
+          "Brown bread",
+          "No bread",
+          "Two breads"
+        ],
+        "correct_answer": 1
+      },
+      {
+        "question": "How much does the bread cost?",
+        "options": [
+          "Three euros",
+          "One euro fifty",
+          "Two euros fifty",
+          "Fifty cents"
+        ],
+        "correct_answer": 2
+      }
+    ]
+  },
+  "audio_files": [
+    "343d04bf3755_0.mp3",
+    "413ef784bd19_1.mp3",
+    "aa87de963c02_0.mp3",
+    "a27b53ad9e13_1.mp3",
+    "2ec27f56600d_0.mp3",
+    "7cffbe31dd1f_1.mp3"
+  ]
+}

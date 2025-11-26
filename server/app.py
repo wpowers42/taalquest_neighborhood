@@ -91,6 +91,29 @@ def generate_scenario():
         return jsonify({"error": str(e)}), 500
 
 
+@app.route("/api/dev-scenario", methods=["GET"])
+def get_dev_scenario():
+    """Get pregenerated scenario for UI/UX development.
+
+    Returns the same format as /api/generate-scenario but instant,
+    using a cached scenario for rapid iteration without API delays.
+    """
+    try:
+        dev_scenario_path = Path(__file__).parent.parent / "generated" / "dev_scenario.json"
+
+        if not dev_scenario_path.exists():
+            return jsonify({"error": "Dev scenario not found. Run pregenerate_scenario.py first."}), 404
+
+        with open(dev_scenario_path, "r", encoding="utf-8") as f:
+            scenario = json.load(f)
+
+        return jsonify(scenario)
+
+    except Exception as e:
+        print(f"Error loading dev scenario: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
 @app.route("/api/generate-audio", methods=["POST"])
 def generate_audio():
     """Generate audio for a single text.

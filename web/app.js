@@ -7,6 +7,10 @@
 const API_BASE_URL = 'http://localhost:5000';
 const PAUSE_BETWEEN_AUDIO_MS = 500;
 
+// Dev mode check (use ?dev=true in URL for instant pregenerated scenario)
+const urlParams = new URLSearchParams(window.location.search);
+const DEV_MODE = urlParams.get('dev') === 'true';
+
 // Application state
 const state = {
     locations: [],
@@ -60,6 +64,11 @@ const audio = new Audio();
 async function init() {
     console.log('Initializing TaalQuest...');
 
+    if (DEV_MODE) {
+        console.log('🚀 DEV MODE ENABLED - Using pregenerated scenario for instant testing');
+        console.log('💡 To disable: remove ?dev=true from URL');
+    }
+
     // Get DOM elements
     elements.locationName = document.getElementById('location-name');
     elements.statusMessage = document.getElementById('status-message');
@@ -100,6 +109,14 @@ async function init() {
     audio.addEventListener('ended', handleAudioEnded);
     audio.addEventListener('error', handleAudioError);
 
+    // Add dev mode indicator to UI
+    if (DEV_MODE) {
+        const subtitle = document.querySelector('.subtitle');
+        subtitle.textContent = '🚀 DEV MODE - Instant pregenerated scenario';
+        subtitle.style.color = '#ff9800';
+        subtitle.style.fontWeight = 'bold';
+    }
+
     // Load locations and generate first scenario
     try {
         await fetchLocations();
@@ -132,16 +149,23 @@ async function loadNewScenario() {
     setUIState('loading');
 
     try {
-        // Generate scenario
-        const response = await fetch(`${API_BASE_URL}/api/generate-scenario`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                exclude_location_id: state.lastLocationId,
-            }),
-        });
+        let response;
+
+        if (DEV_MODE) {
+            // Use pregenerated scenario for instant UI/UX testing
+            response = await fetch(`${API_BASE_URL}/api/dev-scenario`);
+        } else {
+            // Generate new scenario via OpenAI API
+            response = await fetch(`${API_BASE_URL}/api/generate-scenario`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    exclude_location_id: state.lastLocationId,
+                }),
+            });
+        }
 
         if (!response.ok) {
             throw new Error('Failed to generate scenario');
