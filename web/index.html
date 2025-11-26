@@ -27,6 +27,27 @@
                 </button>
             </div>
 
+            <div id="quiz-section" style="display: none;">
+                <div class="quiz-header">
+                    <h3>Test je begrip / Test your understanding</h3>
+                    <p id="quiz-progress">Question 1 of 3</p>
+                </div>
+                <div id="quiz-content">
+                    <p id="quiz-question" class="quiz-question"></p>
+                    <div id="quiz-options" class="quiz-options">
+                        <!-- Options will be inserted here -->
+                    </div>
+                    <div id="quiz-feedback" class="quiz-feedback" style="display: none;"></div>
+                    <button id="quiz-next-button" class="primary-button" style="display: none;">
+                        Next Question
+                    </button>
+                </div>
+                <div id="quiz-results" style="display: none;">
+                    <h3 id="quiz-score"></h3>
+                    <p id="quiz-message"></p>
+                </div>
+            </div>
+
             <div id="controls">
                 <button id="replay-button" class="secondary-button" disabled>
                     <span class="button-icon">↻</span>

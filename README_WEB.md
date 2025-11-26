@@ -6,7 +6,8 @@ An audio-first A1 Dutch learning game where you explore a Dutch neighborhood and
 - 🏘️ 15 Dutch neighborhood locations
 - 🤖 AI-generated A1-level Dutch dialogues (OpenAI gpt-5.1)
 - 🔊 Text-to-speech with distinct voices (OpenAI gpt-4o-mini-tts)
-- 🎮 Simple tap-to-continue gameplay
+- 📝 Comprehension quiz questions after each dialogue
+- 🎮 Interactive learning with immediate feedback
 - 💻 Browser-based (Chrome, Firefox, Safari, Edge)
 
 ## Tech Stack
@@ -28,9 +29,12 @@ An audio-first A1 Dutch learning game where you explore a Dutch neighborhood and
 cd taalquest_neighborhood
 ```
 
-2. **Set up environment variable**
+2. **Set up environment variable** (optional if already in your shell)
 ```bash
-# Create .env file with your OpenAI API key
+# Option A: If you already have OPENAI_API_KEY in your environment (e.g., zshrc)
+# You're good to go! Skip this step.
+
+# Option B: Create .env file for project-specific key
 echo "OPENAI_API_KEY=sk-your-key-here" > .env
 ```
 
@@ -71,8 +75,10 @@ You can also configure Flask to serve the static files directly (modify `server/
 
 1. **Start the app** - A random Dutch location appears
 2. **Tap "Play"** - Listen to the A1 Dutch dialogue
-3. **Replay** - Listen again to reinforce learning
-4. **Continue** - Get a new scenario at a different location
+3. **Answer questions** - Test your comprehension with 3 multiple-choice questions
+4. **See your score** - Get immediate feedback and encouragement
+5. **Replay** - Listen to the dialogue again
+6. **Continue** - Get a new scenario at a different location
 
 ## Project Structure
 
@@ -144,11 +150,17 @@ The original desktop TKinter app (with Ollama integration) is preserved in:
 
 Educational project for Dutch language learning.
 
+## Features Implemented
+
+- ✅ Comprehension quiz questions
+- ✅ Immediate feedback on answers
+- ✅ Score tracking
+
 ## Future Enhancements
 
-- [ ] Comprehension quiz questions
-- [ ] Progress tracking
+- [ ] Progress tracking across sessions
 - [ ] Multiple difficulty levels (A1, A2, B1)
 - [ ] Voice selection UI
+- [ ] Leaderboard and stats
 - [ ] PWA for mobile use
 - [ ] Cloud deployment

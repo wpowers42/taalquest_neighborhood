@@ -203,6 +203,118 @@ footer {
     margin-top: 10px;
 }
 
+/* Quiz section */
+#quiz-section {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 20px;
+}
+
+.quiz-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.quiz-header h3 {
+    font-size: 18px;
+    color: #2196F3;
+    margin-bottom: 8px;
+}
+
+#quiz-progress {
+    font-size: 14px;
+    color: #666;
+}
+
+.quiz-question {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.quiz-option {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 15px;
+    text-align: left;
+}
+
+.quiz-option:hover {
+    border-color: #2196F3;
+    background-color: #f5f5f5;
+}
+
+.quiz-option.selected {
+    border-color: #2196F3;
+    background-color: #e3f2fd;
+}
+
+.quiz-option.correct {
+    border-color: #4CAF50;
+    background-color: #e8f5e9;
+}
+
+.quiz-option.incorrect {
+    border-color: #f44336;
+    background-color: #ffebee;
+}
+
+.quiz-option.disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.quiz-feedback {
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 15px;
+}
+
+.quiz-feedback.correct {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 2px solid #4CAF50;
+}
+
+.quiz-feedback.incorrect {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 2px solid #f44336;
+}
+
+#quiz-results {
+    text-align: center;
+    padding: 20px 0;
+}
+
+#quiz-score {
+    font-size: 32px;
+    font-weight: 700;
+    color: #2196F3;
+    margin-bottom: 12px;
+}
+
+#quiz-message {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
     .game-container {
@@ -223,5 +335,18 @@ footer {
 
     .secondary-button {
         width: 100%;
+    }
+
+    #quiz-section {
+        padding: 16px;
+    }
+
+    .quiz-question {
+        font-size: 15px;
+    }
+
+    .quiz-option {
+        padding: 12px;
+        font-size: 14px;
     }
 }

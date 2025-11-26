@@ -46,15 +46,22 @@ class OpenAIClient:
 Location: {location['name']} ({location['type']})
 Context: {location['description']}
 
-Generate a natural 15-30 second dialogue between two people at this location.
+Generate a natural 15-30 second dialogue between two people at this location, plus 3 comprehension questions.
 
-Requirements:
+Requirements for dialogue:
 - A1 Dutch level (CEFR A1 - beginner)
 - 2 speakers with distinct Dutch names
 - 4-8 lines total
 - Common everyday situations
 - Simple present tense, basic vocabulary
 - Natural but slow-paced conversation
+
+Requirements for questions:
+- 3 multiple-choice questions testing comprehension
+- Questions in English (for A1 learners)
+- Test key details from the dialogue (who, what, where, how much, etc.)
+- 4 answer options each (A, B, C, D)
+- Mark the correct answer
 
 Return ONLY valid JSON:
 {{
@@ -63,6 +70,13 @@ Return ONLY valid JSON:
   "dialogue": [
     {{"speaker": "Name1", "text": "Dutch text here"}},
     {{"speaker": "Name2", "text": "Dutch text here"}}
+  ],
+  "questions": [
+    {{
+      "question": "What did Name1 ask for?",
+      "options": ["Option A", "Option B", "Option C", "Option D"],
+      "correct_answer": 0
+    }}
   ]
 }}"""
 

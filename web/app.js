@@ -16,6 +16,11 @@ const state = {
     lastLocationId: null,
     isPlaying: false,
     currentAudioIndex: 0,
+    // Quiz state
+    quizQuestions: [],
+    currentQuestionIndex: 0,
+    quizScore: 0,
+    quizAnswered: false,
 };
 
 // DOM elements
@@ -25,6 +30,17 @@ const elements = {
     playButton: null,
     replayButton: null,
     continueButton: null,
+    // Quiz elements
+    quizSection: null,
+    quizProgress: null,
+    quizQuestion: null,
+    quizOptions: null,
+    quizFeedback: null,
+    quizNextButton: null,
+    quizContent: null,
+    quizResults: null,
+    quizScore: null,
+    quizMessage: null,
 };
 
 // Audio player
@@ -43,10 +59,23 @@ async function init() {
     elements.replayButton = document.getElementById('replay-button');
     elements.continueButton = document.getElementById('continue-button');
 
+    // Quiz elements
+    elements.quizSection = document.getElementById('quiz-section');
+    elements.quizProgress = document.getElementById('quiz-progress');
+    elements.quizQuestion = document.getElementById('quiz-question');
+    elements.quizOptions = document.getElementById('quiz-options');
+    elements.quizFeedback = document.getElementById('quiz-feedback');
+    elements.quizNextButton = document.getElementById('quiz-next-button');
+    elements.quizContent = document.getElementById('quiz-content');
+    elements.quizResults = document.getElementById('quiz-results');
+    elements.quizScore = document.getElementById('quiz-score');
+    elements.quizMessage = document.getElementById('quiz-message');
+
     // Set up event listeners
     elements.playButton.addEventListener('click', handlePlay);
     elements.replayButton.addEventListener('click', handleReplay);
     elements.continueButton.addEventListener('click', handleContinue);
+    elements.quizNextButton.addEventListener('click', handleNextQuestion);
 
     // Set up audio event listeners
     audio.addEventListener('ended', handleAudioEnded);
@@ -107,6 +136,12 @@ async function loadNewScenario() {
         state.currentAudioFiles = data.audio_files;
         state.lastLocationId = data.location.id;
         state.currentAudioIndex = 0;
+
+        // Reset quiz state
+        state.quizQuestions = data.script.questions || [];
+        state.currentQuestionIndex = 0;
+        state.quizScore = 0;
+        state.quizAnswered = false;
 
         console.log('Scenario generated:', data);
 
@@ -187,7 +222,14 @@ function handleAudioEnded() {
     } else {
         // Sequence complete
         state.isPlaying = false;
-        setUIState('finished');
+
+        // Check if quiz questions available
+        if (state.quizQuestions && state.quizQuestions.length > 0) {
+            showQuiz();
+        } else {
+            setUIState('finished');
+        }
+
         console.log('Audio sequence completed');
     }
 }
@@ -247,6 +289,143 @@ function setUIState(stateName, message = '') {
             elements.statusMessage.innerHTML = `<div class="error-message">❌ ${message}</div>`;
             break;
     }
+}
+
+/**
+ * Show quiz section and display first question
+ */
+function showQuiz() {
+    elements.quizSection.style.display = 'block';
+    elements.quizContent.style.display = 'block';
+    elements.quizResults.style.display = 'none';
+    elements.statusMessage.textContent = '';
+
+    state.currentQuestionIndex = 0;
+    state.quizScore = 0;
+
+    displayCurrentQuestion();
+}
+
+/**
+ * Display the current quiz question
+ */
+function displayCurrentQuestion() {
+    const question = state.quizQuestions[state.currentQuestionIndex];
+    state.quizAnswered = false;
+
+    // Update progress
+    elements.quizProgress.textContent = `Question ${state.currentQuestionIndex + 1} of ${state.quizQuestions.length}`;
+
+    // Display question
+    elements.quizQuestion.textContent = question.question;
+
+    // Clear previous options
+    elements.quizOptions.innerHTML = '';
+
+    // Display options
+    question.options.forEach((option, index) => {
+        const optionDiv = document.createElement('div');
+        optionDiv.className = 'quiz-option';
+        optionDiv.textContent = option;
+        optionDiv.dataset.index = index;
+        optionDiv.addEventListener('click', () => handleAnswerSelection(index));
+        elements.quizOptions.appendChild(optionDiv);
+    });
+
+    // Hide feedback and next button
+    elements.quizFeedback.style.display = 'none';
+    elements.quizNextButton.style.display = 'none';
+}
+
+/**
+ * Handle answer selection
+ */
+function handleAnswerSelection(selectedIndex) {
+    if (state.quizAnswered) return;
+
+    state.quizAnswered = true;
+    const question = state.quizQuestions[state.currentQuestionIndex];
+    const isCorrect = selectedIndex === question.correct_answer;
+
+    if (isCorrect) {
+        state.quizScore++;
+    }
+
+    // Show feedback
+    const options = elements.quizOptions.querySelectorAll('.quiz-option');
+    options.forEach((option, index) => {
+        option.classList.add('disabled');
+        if (index === question.correct_answer) {
+            option.classList.add('correct');
+        } else if (index === selectedIndex && !isCorrect) {
+            option.classList.add('incorrect');
+        }
+    });
+
+    // Display feedback message
+    elements.quizFeedback.style.display = 'block';
+    if (isCorrect) {
+        elements.quizFeedback.className = 'quiz-feedback correct';
+        elements.quizFeedback.textContent = '✓ Correct! Goed gedaan!';
+    } else {
+        elements.quizFeedback.className = 'quiz-feedback incorrect';
+        elements.quizFeedback.textContent = `✗ Incorrect. The correct answer was: ${question.options[question.correct_answer]}`;
+    }
+
+    // Show next button or finish button
+    if (state.currentQuestionIndex < state.quizQuestions.length - 1) {
+        elements.quizNextButton.textContent = 'Next Question';
+        elements.quizNextButton.style.display = 'block';
+    } else {
+        elements.quizNextButton.textContent = 'See Results';
+        elements.quizNextButton.style.display = 'block';
+    }
+}
+
+/**
+ * Handle next question button click
+ */
+function handleNextQuestion() {
+    if (state.currentQuestionIndex < state.quizQuestions.length - 1) {
+        state.currentQuestionIndex++;
+        displayCurrentQuestion();
+    } else {
+        showQuizResults();
+    }
+}
+
+/**
+ * Show quiz results
+ */
+function showQuizResults() {
+    elements.quizContent.style.display = 'none';
+    elements.quizResults.style.display = 'block';
+
+    const percentage = Math.round((state.quizScore / state.quizQuestions.length) * 100);
+
+    elements.quizScore.textContent = `${state.quizScore} / ${state.quizQuestions.length}`;
+
+    if (percentage === 100) {
+        elements.quizMessage.textContent = 'Perfect! Uitstekend! 🎉';
+    } else if (percentage >= 66) {
+        elements.quizMessage.textContent = 'Great job! Goed gedaan! 👏';
+    } else if (percentage >= 33) {
+        elements.quizMessage.textContent = 'Not bad! Keep practicing! 💪';
+    } else {
+        elements.quizMessage.textContent = 'Keep trying! Blijf oefenen! 📚';
+    }
+
+    // Show replay and continue buttons
+    setUIState('finished');
+}
+
+/**
+ * Continue to next scenario (also hides quiz)
+ */
+async function handleContinue() {
+    // Hide quiz section
+    elements.quizSection.style.display = 'none';
+    await loadNewScenario();
 }
 
 // Initialize when DOM is ready

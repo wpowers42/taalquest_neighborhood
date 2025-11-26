@@ -11,7 +11,8 @@ from flask_cors import CORS
 
 from openai_client import OpenAIClient
 
-# Load environment variables
+# Load environment variables from .env file (if it exists)
+# Falls back to system environment variables if .env doesn't exist
 load_dotenv(Path(__file__).parent.parent / ".env")
 
 # Initialize Flask app
@@ -21,7 +22,7 @@ CORS(app)  # Enable CORS for localhost frontend
 # Initialize OpenAI client
 openai_key = os.getenv("OPENAI_API_KEY")
 if not openai_key:
-    raise ValueError("OPENAI_API_KEY not found in environment variables")
+    raise ValueError("OPENAI_API_KEY not found in environment variables or .env file")
 
 ai_client = OpenAIClient(
     api_key=openai_key,
