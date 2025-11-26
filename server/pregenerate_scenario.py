@@ -16,7 +16,9 @@ api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
     raise ValueError("OPENAI_API_KEY not found in environment")
 
-client = OpenAIClient(api_key)
+# Use same audio cache directory as main app
+audio_cache_dir = str(Path(__file__).parent.parent / "generated" / "audio")
+client = OpenAIClient(api_key, audio_cache_dir=audio_cache_dir)
 
 # Load locations
 with open("../data/locations.json", "r", encoding="utf-8") as f:

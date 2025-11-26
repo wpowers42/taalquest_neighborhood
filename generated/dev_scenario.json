@@ -6,88 +6,102 @@
     "description": "A traditional Dutch bakery in the town center"
   },
   "script": {
-    "situation": "At a traditional bakery, a customer buys bread and asks for the price.",
+    "situation": "At a traditional bakery, a customer buys bread and something sweet.",
     "characters": [
       "Sanne",
-      "Jeroen"
+      "Pieter"
     ],
     "dialogue": [
       {
         "speaker": "Sanne",
-        "text": "Goedemorgen. Ik wil één brood, alstublieft.",
-        "translation": "Good morning. I want one loaf of bread, please.",
+        "text": "Goedemorgen, wat wilt u graag?",
+        "translation": "Good morning, what would you like?",
         "voice_id": 0
       },
       {
-        "speaker": "Jeroen",
-        "text": "Goedemorgen. Wit brood of bruin brood?",
-        "translation": "Good morning. White bread or brown bread?",
+        "speaker": "Pieter",
+        "text": "Goedemorgen, ik wil één brood en twee broodjes, alstublieft.",
+        "translation": "Good morning, I want one loaf of bread and two rolls, please.",
         "voice_id": 1
       },
       {
         "speaker": "Sanne",
-        "text": "Bruin brood, alstublieft. Hoeveel kost het?",
-        "translation": "Brown bread, please. How much does it cost?",
+        "text": "Wilt u nog iets? Misschien een koekje?",
+        "translation": "Would you like anything else? Maybe a cookie?",
         "voice_id": 0
       },
       {
-        "speaker": "Jeroen",
-        "text": "Het kost twee euro vijftig.",
-        "translation": "It costs two euros fifty.",
+        "speaker": "Pieter",
+        "text": "Ja, doe ook maar één koekje.",
+        "translation": "Yes, I’ll also take one cookie.",
         "voice_id": 1
       },
       {
         "speaker": "Sanne",
-        "text": "Oké, hier is drie euro.",
-        "translation": "Okay, here is three euros.",
+        "text": "Dat is samen vier euro, alstublieft.",
+        "translation": "That is four euros in total, please.",
         "voice_id": 0
       },
       {
-        "speaker": "Jeroen",
-        "text": "Dank u wel. En hier is vijftig cent terug.",
-        "translation": "Thank you. And here is fifty cents back.",
+        "speaker": "Pieter",
+        "text": "Hier is vijf euro.",
+        "translation": "Here is five euros.",
+        "voice_id": 1
+      },
+      {
+        "speaker": "Sanne",
+        "text": "Dank u wel, en hier is één euro terug.",
+        "translation": "Thank you, and here is one euro back.",
+        "voice_id": 0
+      },
+      {
+        "speaker": "Pieter",
+        "text": "Dank u, fijne dag!",
+        "translation": "Thank you, have a nice day!",
         "voice_id": 1
       }
     ],
     "questions": [
       {
-        "question": "Where are Sanne and Jeroen?",
+        "question": "Where are Sanne and Pieter?",
         "options": [
           "In a bakery",
           "In a supermarket",
-          "In a café",
+          "In a restaurant",
           "In a school"
         ],
         "correct_answer": 0
       },
       {
-        "question": "What kind of bread does Sanne want?",
+        "question": "What does Pieter buy first?",
         "options": [
-          "White bread",
-          "Brown bread",
-          "No bread",
-          "Two breads"
+          "Two cookies and one roll",
+          "One loaf of bread and two rolls",
+          "Three loaves of bread",
+          "Only one cookie"
         ],
         "correct_answer": 1
       },
       {
-        "question": "How much does the bread cost?",
+        "question": "How much does Pieter pay?",
         "options": [
           "Three euros",
-          "One euro fifty",
-          "Two euros fifty",
-          "Fifty cents"
+          "Four euros",
+          "Five euros",
+          "Six euros"
         ],
         "correct_answer": 2
       }
     ]
   },
   "audio_files": [
-    "343d04bf3755_0.mp3",
-    "413ef784bd19_1.mp3",
-    "aa87de963c02_0.mp3",
-    "a27b53ad9e13_1.mp3",
-    "2ec27f56600d_0.mp3",
-    "7cffbe31dd1f_1.mp3"
+    "0cdbe582a5de_0.mp3",
+    "b0daf1ec7473_1.mp3",
+    "77718a5b90db_0.mp3",
+    "0862305617d4_1.mp3",
+    "03194c3a4574_0.mp3",
+    "2d850ea9bf75_1.mp3",
+    "6038b4dbfe2f_0.mp3",
+    "cb5a12c5d7cd_1.mp3"
   ]
 }
