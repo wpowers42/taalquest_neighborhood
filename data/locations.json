@@ -1,0 +1,92 @@
+[
+  {
+    "id": "bakkerij_centrum",
+    "name": "Bakkerij De Gouden Korrel",
+    "type": "bakkerij",
+    "description": "A traditional Dutch bakery in the town center"
+  },
+  {
+    "id": "albert_heijn",
+    "name": "Albert Heijn Supermarkt",
+    "type": "supermarkt",
+    "description": "Local supermarket chain"
+  },
+  {
+    "id": "vondelpark",
+    "name": "Vondelpark",
+    "type": "park",
+    "description": "A peaceful neighborhood park with benches and walking paths"
+  },
+  {
+    "id": "cafe_de_hoek",
+    "name": "Café De Hoek",
+    "type": "cafe",
+    "description": "A cozy corner café serving coffee and traditional Dutch treats"
+  },
+  {
+    "id": "bushalte_centraal",
+    "name": "Bushalte Centraal Station",
+    "type": "bushalte",
+    "description": "Main bus stop near the central station"
+  },
+  {
+    "id": "apotheek_gezondheid",
+    "name": "Apotheek Gezondheid",
+    "type": "apotheek",
+    "description": "Neighborhood pharmacy"
+  },
+  {
+    "id": "bibliotheek",
+    "name": "Openbare Bibliotheek",
+    "type": "bibliotheek",
+    "description": "Public library with reading areas and computer access"
+  },
+  {
+    "id": "markt",
+    "name": "Weekmarkt",
+    "type": "markt",
+    "description": "Weekly outdoor market with fresh produce and local goods"
+  },
+  {
+    "id": "fietsenwinkel",
+    "name": "Fietsenwinkel De Wieleman",
+    "type": "fietsenwinkel",
+    "description": "Bicycle shop with repairs and rentals"
+  },
+  {
+    "id": "postkantoor",
+    "name": "PostNL Postkantoor",
+    "type": "postkantoor",
+    "description": "Local post office for mail and packages"
+  },
+  {
+    "id": "slagerij",
+    "name": "Slagerij Van Dijk",
+    "type": "slagerij",
+    "description": "Traditional Dutch butcher shop"
+  },
+  {
+    "id": "bloemenwinkel",
+    "name": "Bloemen & Planten",
+    "type": "bloemenwinkel",
+    "description": "Flower shop with fresh bouquets and potted plants"
+  },
+  {
+    "id": "school",
+    "name": "Basisschool De Regenboog",
+    "type": "school",
+    "description": "Elementary school playground area"
+  },
+  {
+    "id": "sporthal",
+    "name": "Sporthal Olympia",
+    "type": "sporthal",
+    "description": "Indoor sports hall for basketball and volleyball"
+  },
+  {
+    "id": "restaurant",
+    "name": "Restaurant Het Gezellige Hoekje",
+    "type": "restaurant",
+    "description": "Small family restaurant serving Dutch cuisine"
+  }
+]
