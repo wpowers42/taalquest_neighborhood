@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaalQuest: Neighborhood Watch</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <header>
+            <h1>TaalQuest: Neighborhood Watch</h1>
+            <p class="subtitle">Learn A1 Dutch through neighborhood scenarios</p>
+        </header>
+
+        <main id="game-screen">
+            <div id="location-display">
+                <div class="location-icon">🏘️</div>
+                <h2 id="location-name">Loading...</h2>
+            </div>
+
+            <div id="status-area">
+                <p id="status-message"></p>
+                <button id="play-button" class="primary-button" disabled>
+                    <span class="button-icon">▶</span>
+                    <span class="button-text">Tap to Play</span>
+                </button>
+            </div>
+
+            <div id="controls">
+                <button id="replay-button" class="secondary-button" disabled>
+                    <span class="button-icon">↻</span>
+                    <span class="button-text">Replay</span>
+                </button>
+                <button id="continue-button" class="secondary-button" disabled>
+                    <span class="button-icon">→</span>
+                    <span class="button-text">Continue</span>
+                </button>
+            </div>
+        </main>
+
+        <footer>
+            <p class="footer-text">Audio-first A1 Dutch learning</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Game container */
+.game-container {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+    padding: 30px;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 20px;
+}
+
+header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2196F3;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Main game screen */
+#game-screen {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Location display */
+#location-display {
+    text-align: center;
+}
+
+.location-icon {
+    font-size: 64px;
+    margin-bottom: 15px;
+    animation: fadeIn 0.5s ease-in;
+}
+
+#location-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #555;
+    line-height: 1.4;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Status area */
+#status-area {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#status-message {
+    font-size: 14px;
+    color: #666;
+    min-height: 20px;
+    font-style: italic;
+}
+
+/* Buttons */
+button {
+    font-family: inherit;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 16px 24px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.primary-button {
+    background-color: #2196F3;
+    color: white;
+    width: 100%;
+}
+
+.primary-button:not(:disabled):hover {
+    background-color: #1976D2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+}
+
+.primary-button:not(:disabled):active {
+    transform: translateY(0);
+}
+
+.secondary-button {
+    background-color: white;
+    color: #333;
+    border: 2px solid #e0e0e0;
+    flex: 1;
+}
+
+.secondary-button:not(:disabled):hover {
+    background-color: #f5f5f5;
+    border-color: #2196F3;
+    color: #2196F3;
+}
+
+.button-icon {
+    font-size: 18px;
+}
+
+.button-text {
+    font-size: 16px;
+}
+
+/* Controls */
+#controls {
+    display: flex;
+    gap: 12px;
+}
+
+/* Footer */
+footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #f0f0f0;
+    text-align: center;
+}
+
+.footer-text {
+    font-size: 12px;
+    color: #999;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.loading {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Error state */
+.error-message {
+    color: #f44336;
+    background-color: #ffebee;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .game-container {
+        padding: 20px;
+    }
+
+    header h1 {
+        font-size: 20px;
+    }
+
+    #location-name {
+        font-size: 18px;
+    }
+
+    #controls {
+        flex-direction: column;
+    }
+
+    .secondary-button {
+        width: 100%;
+    }
+}
