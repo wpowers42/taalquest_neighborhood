@@ -12,10 +12,10 @@
     "description": "Local supermarket chain"
   },
   {
-    "id": "vondelpark",
-    "name": "Vondelpark",
+    "id": "griftpark",
+    "name": "Griftpark Utrecht",
     "type": "park",
-    "description": "A peaceful neighborhood park with benches and walking paths"
+    "description": "A peaceful Utrecht neighborhood park with benches, walking paths, and a playground"
   },
   {
     "id": "cafe_de_hoek",
@@ -88,5 +88,95 @@
     "name": "Restaurant Het Gezellige Hoekje",
     "type": "restaurant",
     "description": "Small family restaurant serving Dutch cuisine"
+  },
+  {
+    "id": "huisarts_utrecht",
+    "name": "Huisartsenpraktijk Utrecht Centrum",
+    "type": "huisarts",
+    "description": "Family doctor's office in Utrecht for medical appointments and consultations"
+  },
+  {
+    "id": "utrecht_centraal",
+    "name": "Utrecht Centraal Station",
+    "type": "treinstation",
+    "description": "Main train station in Utrecht with ticket counters, platforms, and travel information"
+  },
+  {
+    "id": "school_dropoff",
+    "name": "Basisschool De Regenboog - Ingang",
+    "type": "school_entrance",
+    "description": "Elementary school entrance during morning drop-off or afternoon pickup time with parents and children"
+  },
+  {
+    "id": "buurt_straat",
+    "name": "Woonstraat Utrecht",
+    "type": "neighborhood_street",
+    "description": "Residential street in Utrecht where neighbors meet and chat about daily life"
+  },
+  {
+    "id": "spelletjesavond",
+    "name": "Thuis - Spelletjesavond",
+    "type": "home_gathering",
+    "description": "A friend's home in Utrecht during a cozy board game night with snacks and drinks"
+  },
+  {
+    "id": "speeltuin",
+    "name": "Speeltuin Oog in Al",
+    "type": "playground",
+    "description": "Children's playground in Utrecht Oost where parents supervise kids playing"
+  },
+  {
+    "id": "tandarts",
+    "name": "Tandartspraktijk Utrecht",
+    "type": "dentist",
+    "description": "Dental practice in Utrecht for checkups and appointments"
+  },
+  {
+    "id": "kapper",
+    "name": "Kapsalon Utrecht",
+    "type": "hair_salon",
+    "description": "Hair salon in Utrecht for haircuts and styling"
+  },
+  {
+    "id": "gemeentehuis",
+    "name": "Gemeentehuis Utrecht",
+    "type": "city_hall",
+    "description": "Utrecht city hall for administrative services like ID cards and permits"
+  },
+  {
+    "id": "zwembad",
+    "name": "Zwembad De Krommerijn",
+    "type": "swimming_pool",
+    "description": "Public swimming pool in Utrecht for recreation and swimming lessons"
+  },
+  {
+    "id": "buurthuis",
+    "name": "Buurthuis De Verbinding",
+    "type": "community_center",
+    "description": "Neighborhood community center in Utrecht with activities and social gatherings"
+  },
+  {
+    "id": "dierenarts",
+    "name": "Dierenkliniek Utrecht",
+    "type": "veterinarian",
+    "description": "Veterinary clinic in Utrecht for pet care and checkups"
+  },
+  {
+    "id": "museum",
+    "name": "Centraal Museum Utrecht",
+    "type": "museum",
+    "description": "Art and history museum in Utrecht with exhibitions and cultural events"
+  },
+  {
+    "id": "boekwinkel",
+    "name": "Boekhandel Broese",
+    "type": "bookstore",
+    "description": "Independent bookstore in Utrecht with Dutch and international books"
+  },
+  {
+    "id": "parkeergarage",
+    "name": "Parkeergarage Hoog Catharijne",
+    "type": "parking_garage",
+    "description": "Parking garage in Utrecht city center near the station"
   }
 ]

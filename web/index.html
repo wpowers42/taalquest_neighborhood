@@ -20,6 +20,10 @@
             </div>
 
             <div id="status-area">
+                <div id="current-speaker" class="current-speaker" style="display: none;">
+                    <span class="speaker-label">Speaking:</span>
+                    <span id="speaker-name" class="speaker-name"></span>
+                </div>
                 <p id="status-message"></p>
                 <button id="play-button" class="primary-button" disabled>
                     <span class="button-icon">▶</span>
@@ -28,22 +32,17 @@
             </div>
 
             <div id="transcript-controls" style="display: none;">
-                <button id="show-dutch-button" class="transcript-toggle">
-                    📝 Show Dutch Text
-                </button>
-                <button id="show-english-button" class="transcript-toggle">
-                    📖 Show English Translation
+                <button id="show-transcript-button" class="transcript-toggle">
+                    📝 Show Transcript
                 </button>
             </div>
 
-            <div id="dutch-transcript" class="transcript-box" style="display: none;">
-                <h4>Dutch Text (Nederlands)</h4>
-                <div id="dutch-content"></div>
-            </div>
-
-            <div id="english-transcript" class="transcript-box" style="display: none;">
-                <h4>English Translation</h4>
-                <div id="english-content"></div>
+            <div id="transcript" class="transcript-box" style="display: none;">
+                <div class="transcript-header">
+                    <h4 class="transcript-title dutch-title">Nederlands</h4>
+                    <h4 class="transcript-title english-title">English</h4>
+                </div>
+                <div id="transcript-content"></div>
             </div>
 
             <div id="quiz-section" style="display: none;">

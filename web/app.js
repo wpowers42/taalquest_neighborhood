@@ -35,6 +35,8 @@ const elements = {
     playButton: null,
     replayButton: null,
     continueButton: null,
+    currentSpeaker: null,
+    speakerName: null,
     // Quiz elements
     quizSection: null,
     quizProgress: null,
@@ -48,12 +50,9 @@ const elements = {
     quizMessage: null,
     // Transcript elements
     transcriptControls: null,
-    showDutchButton: null,
-    showEnglishButton: null,
-    dutchTranscript: null,
-    englishTranscript: null,
-    dutchContent: null,
-    englishContent: null,
+    showTranscriptButton: null,
+    transcript: null,
+    transcriptContent: null,
 };
 
 // Audio player
@@ -76,6 +75,8 @@ async function init() {
     elements.playButton = document.getElementById('play-button');
     elements.replayButton = document.getElementById('replay-button');
     elements.continueButton = document.getElementById('continue-button');
+    elements.currentSpeaker = document.getElementById('current-speaker');
+    elements.speakerName = document.getElementById('speaker-name');
 
     // Quiz elements
     elements.quizSection = document.getElementById('quiz-section');
@@ -91,20 +92,16 @@ async function init() {
 
     // Transcript elements
     elements.transcriptControls = document.getElementById('transcript-controls');
-    elements.showDutchButton = document.getElementById('show-dutch-button');
-    elements.showEnglishButton = document.getElementById('show-english-button');
-    elements.dutchTranscript = document.getElementById('dutch-transcript');
-    elements.englishTranscript = document.getElementById('english-transcript');
-    elements.dutchContent = document.getElementById('dutch-content');
-    elements.englishContent = document.getElementById('english-content');
+    elements.showTranscriptButton = document.getElementById('show-transcript-button');
+    elements.transcript = document.getElementById('transcript');
+    elements.transcriptContent = document.getElementById('transcript-content');
 
     // Set up event listeners
     elements.playButton.addEventListener('click', handlePlay);
     elements.replayButton.addEventListener('click', handleReplay);
     elements.continueButton.addEventListener('click', handleContinue);
     elements.quizNextButton.addEventListener('click', handleNextQuestion);
-    elements.showDutchButton.addEventListener('click', toggleDutchTranscript);
-    elements.showEnglishButton.addEventListener('click', toggleEnglishTranscript);
+    elements.showTranscriptButton.addEventListener('click', toggleTranscript);
 
     // Set up audio event listeners
     audio.addEventListener('ended', handleAudioEnded);
@@ -248,6 +245,7 @@ function handlePlay() {
 
     state.isPlaying = true;
     state.currentAudioIndex = 0;
+    elements.currentSpeaker.style.display = 'none';
     setUIState('playing');
 
     playCurrentAudio();
@@ -279,8 +277,16 @@ function playCurrentAudio() {
     const filename = state.currentAudioFiles[state.currentAudioIndex];
     const audioUrl = `${API_BASE_URL}/api/audio/${filename}`;
 
+    // Get current dialogue line to show speaker
+    const currentLine = state.currentScript.dialogue[state.currentAudioIndex];
+    if (currentLine) {
+        elements.speakerName.textContent = currentLine.speaker;
+        elements.currentSpeaker.style.display = 'block';
+    }
+
     console.log(`🔊 Audio [${state.currentAudioIndex + 1}/${state.currentAudioFiles.length}]: Fetching ${filename}`);
     console.log(`  → URL: ${audioUrl}`);
+    console.log(`  → Speaker: ${currentLine?.speaker}`);
 
     const loadStartTime = performance.now();
 
@@ -316,6 +322,9 @@ function handleAudioEnded() {
     } else {
         // Sequence complete
         state.isPlaying = false;
+
+        // Hide speaker display
+        elements.currentSpeaker.style.display = 'none';
 
         console.log('✓ Audio sequence completed - All files played successfully');
 
@@ -529,108 +538,85 @@ function showQuizResults() {
  * Continue to next scenario (also hides quiz and transcripts)
  */
 async function handleContinue() {
-    // Hide quiz section and transcripts
+    // Hide quiz section and transcript
     elements.quizSection.style.display = 'none';
     elements.transcriptControls.style.display = 'none';
-    elements.dutchTranscript.style.display = 'none';
-    elements.englishTranscript.style.display = 'none';
-    elements.showDutchButton.classList.remove('active');
-    elements.showEnglishButton.classList.remove('active');
+    elements.transcript.style.display = 'none';
+    elements.showTranscriptButton.classList.remove('active');
+    elements.currentSpeaker.style.display = 'none';
 
     // Clear transcript content so it will be repopulated for the new scenario
-    elements.dutchContent.innerHTML = '';
-    elements.englishContent.innerHTML = '';
+    elements.transcriptContent.innerHTML = '';
 
     await loadNewScenario();
 }
 
 /**
- * Toggle Dutch transcript visibility
+ * Toggle transcript visibility
  */
-function toggleDutchTranscript() {
-    const isVisible = elements.dutchTranscript.style.display === 'block';
+function toggleTranscript() {
+    const isVisible = elements.transcript.style.display === 'block';
 
     if (!isVisible) {
         // Populate transcript if first time
-        if (!elements.dutchContent.innerHTML) {
-            populateDutchTranscript();
+        if (!elements.transcriptContent.innerHTML) {
+            populateTranscript();
         }
-        elements.dutchTranscript.style.display = 'block';
-        elements.showDutchButton.classList.add('active');
-        elements.showDutchButton.textContent = '📝 Hide Dutch Text';
+        elements.transcript.style.display = 'block';
+        elements.showTranscriptButton.classList.add('active');
+        elements.showTranscriptButton.textContent = '📝 Hide Transcript';
     } else {
-        elements.dutchTranscript.style.display = 'none';
-        elements.showDutchButton.classList.remove('active');
-        elements.showDutchButton.textContent = '📝 Show Dutch Text';
+        elements.transcript.style.display = 'none';
+        elements.showTranscriptButton.classList.remove('active');
+        elements.showTranscriptButton.textContent = '📝 Show Transcript';
     }
 }
 
 /**
- * Toggle English transcript visibility
+ * Populate transcript with side-by-side Dutch and English
  */
-function toggleEnglishTranscript() {
-    const isVisible = elements.englishTranscript.style.display === 'block';
-
-    if (!isVisible) {
-        // Populate transcript if first time
-        if (!elements.englishContent.innerHTML) {
-            populateEnglishTranscript();
-        }
-        elements.englishTranscript.style.display = 'block';
-        elements.showEnglishButton.classList.add('active');
-        elements.showEnglishButton.textContent = '📖 Hide English Translation';
-    } else {
-        elements.englishTranscript.style.display = 'none';
-        elements.showEnglishButton.classList.remove('active');
-        elements.showEnglishButton.textContent = '📖 Show English Translation';
-    }
-}
-
-/**
- * Populate Dutch transcript
- */
-function populateDutchTranscript() {
-    elements.dutchContent.innerHTML = '';
+function populateTranscript() {
+    elements.transcriptContent.innerHTML = '';
 
     state.currentScript.dialogue.forEach((line) => {
         const lineDiv = document.createElement('div');
         lineDiv.className = 'transcript-line';
 
-        const speakerDiv = document.createElement('div');
-        speakerDiv.className = 'speaker';
-        speakerDiv.textContent = line.speaker + ':';
+        // Dutch side
+        const dutchSide = document.createElement('div');
+        dutchSide.className = 'dutch-side';
 
-        const textDiv = document.createElement('div');
-        textDiv.className = 'text';
-        textDiv.textContent = line.text;
+        const dutchSpeaker = document.createElement('div');
+        dutchSpeaker.className = 'speaker';
+        dutchSpeaker.textContent = line.speaker;
 
-        lineDiv.appendChild(speakerDiv);
-        lineDiv.appendChild(textDiv);
-        elements.dutchContent.appendChild(lineDiv);
-    });
-}
+        const dutchText = document.createElement('div');
+        dutchText.className = 'text';
+        dutchText.textContent = line.text;
 
-/**
- * Populate English transcript
- */
-function populateEnglishTranscript() {
-    elements.englishContent.innerHTML = '';
+        dutchSide.appendChild(dutchSpeaker);
+        dutchSide.appendChild(dutchText);
 
-    state.currentScript.dialogue.forEach((line) => {
-        const lineDiv = document.createElement('div');
-        lineDiv.className = 'transcript-line';
+        // English side
+        const englishSide = document.createElement('div');
+        englishSide.className = 'english-side';
 
-        const speakerDiv = document.createElement('div');
-        speakerDiv.className = 'speaker';
-        speakerDiv.textContent = line.speaker + ':';
+        const englishSpeaker = document.createElement('div');
+        englishSpeaker.className = 'speaker';
+        englishSpeaker.textContent = line.speaker;
 
-        const textDiv = document.createElement('div');
-        textDiv.className = 'text';
-        textDiv.textContent = line.translation || '[Translation not available]';
+        const englishText = document.createElement('div');
+        englishText.className = 'text';
+        englishText.textContent = line.translation || '[Translation not available]';
 
-        lineDiv.appendChild(speakerDiv);
-        lineDiv.appendChild(textDiv);
-        elements.englishContent.appendChild(lineDiv);
+        englishSide.appendChild(englishSpeaker);
+        englishSide.appendChild(englishText);
+
+        // Add both sides to line
+        lineDiv.appendChild(dutchSide);
+        lineDiv.appendChild(englishSide);
+
+        elements.transcriptContent.appendChild(lineDiv);
     });
 }
 

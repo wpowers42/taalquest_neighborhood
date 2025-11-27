@@ -46,7 +46,7 @@ class OpenAIClient:
 Location: {location['name']} ({location['type']})
 Context: {location['description']}
 
-Generate a natural 15-30 second dialogue between two people at this location, plus 3 comprehension questions.
+Generate a natural 15-30 second dialogue between two people at this location, plus 7 comprehension questions.
 
 Requirements for dialogue:
 - A1 Dutch level (CEFR A1 - beginner)
@@ -58,9 +58,10 @@ Requirements for dialogue:
 - Include English translation for each dialogue line
 
 Requirements for questions:
-- 3 multiple-choice questions testing comprehension
+- 7 multiple-choice questions testing comprehension
 - Questions in English (for A1 learners)
-- Test key details from the dialogue (who, what, where, how much, etc.)
+- First 5 questions: Test basic details from the dialogue (who, what, where, how much, etc.)
+- Last 2 questions: More challenging comprehension that requires inference, understanding context, or synthesizing information from multiple parts of the dialogue
 - 4 answer options each (A, B, C, D)
 - Mark the correct answer
 
@@ -83,7 +84,7 @@ Return ONLY valid JSON:
 
         try:
             response = self.client.chat.completions.create(
-                model="gpt-5.1",
+                model="gpt-5-mini",
                 messages=[{"role": "user", "content": prompt}],
                 response_format={"type": "json_object"}
             )
