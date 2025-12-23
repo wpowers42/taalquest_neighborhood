@@ -244,6 +244,17 @@ export async function generateScript(apiKey, char1, char2, scenarioDescription) 
     // Stage 2: Generate dialogue from outline
     const script = await generateDialogueFromOutline(apiKey, char1, char2, outline);
 
+    // Post-process: Ensure voice_ids match speakers (LLM may not follow instructions)
+    const voiceMap = {
+        [char1.name]: char1.voice_id,
+        [char2.name]: char2.voice_id
+    };
+
+    script.dialogue = script.dialogue.map(line => ({
+        ...line,
+        voice_id: voiceMap[line.speaker] ?? char1.voice_id
+    }));
+
     return script;
 }
 
