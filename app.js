@@ -16,6 +16,14 @@ import {
   , UI_STATES
   , QUIZ
 } from './constants.js';
+import {
+    openDatabase
+  , saveCachedScenario
+  , getCachedScenario
+  , hasCachedScenario
+  , blobUrlToArrayBuffer
+  , arrayBufferToBlobUrl
+} from './cache.js';
 
 // ============================================================================
 // APPLICATION STATE
@@ -39,7 +47,10 @@ const state = {
     currentQuestionIndex: 0,
     quizScore: 0,
     quizAnswered: false,
-    quizShown: false
+    quizShown: false,
+
+    // Cache state
+    isBackgroundGenerating: false
 };
 
 // DOM elements cache
@@ -134,11 +145,22 @@ function selectRandomCharacters() {
 
 async function generateNewScenario() {
     console.log('Generating new scenario...');
-    setUIState(UI_STATES.LOADING);
 
     // Clear previous blob URLs to prevent memory leaks
     clearAudioUrls();
     clearSceneImage();
+
+    // Try to load from cache first
+    const loadedFromCache = await loadFromCache();
+
+    if (loadedFromCache) {
+        console.log('Scenario loaded from cache - instant!');
+        setUIState(UI_STATES.READY);
+        return;
+    }
+
+    // No cache available, generate fresh
+    setUIState(UI_STATES.LOADING);
 
     try {
         // Select characters
@@ -225,6 +247,160 @@ function clearSceneImage() {
 }
 
 // ============================================================================
+// BACKGROUND CACHING
+// ============================================================================
+
+/**
+ * Generate a scenario in the background and cache it
+ */
+async function generateAndCacheScenario() {
+    if (state.isBackgroundGenerating || !state.apiKey) {
+        return;
+    }
+
+    // Check if we already have a cached scenario
+    try {
+        const hasCache = await hasCachedScenario();
+        if (hasCache) {
+            return;
+        }
+    } catch (error) {
+        console.warn('Failed to check cache:', error);
+    }
+
+    state.isBackgroundGenerating = true;
+
+    console.log('[Background] Starting scenario generation...');
+
+    try {
+        // Select characters
+        const [char1, char2] = selectRandomCharacters();
+        console.log(`[Background] Selected characters: ${char1.name} and ${char2.name}`);
+
+        // Generate rich scenario description
+        const scenario = await generateScenario(state.apiKey, char1.name, char2.name);
+        console.log('[Background] Scenario generated');
+
+        // Generate script
+        const script = await generateScript(state.apiKey, char1, char2, scenario.scenario_description);
+        console.log('[Background] Script generated');
+
+        // Generate audio and scene image in parallel
+        const [audioUrls, sceneImageUrl] = await Promise.all([
+            Promise.all(
+                script.dialogue.map(line => generateAudio(line.text, line.voice_id))
+            ),
+            generateSceneImage(
+                state.apiKey,
+                scenario.setting_type,
+                scenario.mood,
+                scenario.scenario_description
+            ).catch(err => {
+                console.warn('[Background] Scene image generation failed:', err);
+                return null;
+            })
+        ]);
+
+        console.log('[Background] Audio and image generated');
+
+        // Convert blob URLs to ArrayBuffers for storage
+        const audioBlobs = await Promise.all(
+            audioUrls.map(url => blobUrlToArrayBuffer(url))
+        );
+
+        let imageBlob = null;
+        if (sceneImageUrl) {
+            // Scene image is a data URL, convert to ArrayBuffer
+            const response = await fetch(sceneImageUrl);
+            const blob = await response.blob();
+            imageBlob = await blob.arrayBuffer();
+        }
+
+        // Revoke the temporary blob URLs
+        audioUrls.forEach(url => URL.revokeObjectURL(url));
+
+        // Save to IndexedDB
+        await saveCachedScenario({
+            script,
+            audioBlobs,
+            imageBlob,
+            characters: [char1.name, char2.name]
+        });
+
+        console.log('[Background] Scenario cached successfully');
+
+    } catch (error) {
+        console.error('[Background] Failed to generate and cache scenario:', error);
+    } finally {
+        state.isBackgroundGenerating = false;
+    }
+}
+
+/**
+ * Load a scenario from the cache
+ * @returns {Promise<boolean>} True if loaded from cache, false otherwise
+ */
+async function loadFromCache() {
+    try {
+        const cached = await getCachedScenario();
+
+        if (!cached) {
+            return false;
+        }
+
+        console.log('Loading scenario from cache...');
+
+        // Convert ArrayBuffers back to blob URLs
+        const audioUrls = cached.audioBlobs.map(
+            buffer => arrayBufferToBlobUrl(buffer, 'audio/mpeg')
+        );
+
+        let sceneImageUrl = null;
+        if (cached.imageBlob) {
+            sceneImageUrl = arrayBufferToBlobUrl(cached.imageBlob, 'image/png');
+        }
+
+        // Set state
+        state.currentScript = cached.script;
+        state.currentAudioUrls = audioUrls;
+        state.currentSceneImageUrl = sceneImageUrl;
+
+        // Reset quiz state
+        state.quizQuestions = cached.script.questions || [];
+        state.currentQuestionIndex = 0;
+        state.quizScore = 0;
+        state.quizAnswered = false;
+        state.quizShown = false;
+
+        // Display scene image if available
+        if (sceneImageUrl) {
+            elements.sceneImage.src = sceneImageUrl;
+            elements.sceneImageContainer.style.display = 'block';
+            elements.scenarioIcon.style.display = 'none';
+        }
+
+        // Update UI
+        elements.scenarioSituation.textContent = cached.script.situation || '';
+
+        console.log('Loaded scenario from cache');
+        return true;
+
+    } catch (error) {
+        console.error('Failed to load from cache:', error);
+        return false;
+    }
+}
+
+/**
+ * Start background generation if needed
+ */
+function startBackgroundGeneration() {
+    if (!state.isBackgroundGenerating && state.apiKey) {
+        generateAndCacheScenario();
+    }
+}
+
+// ============================================================================
 // AUDIO PLAYBACK
 // ============================================================================
 
@@ -291,12 +467,16 @@ function handleAudioEnded() {
 
         console.log('Audio sequence completed');
 
+        // Start generating next scenario in background
+        startBackgroundGeneration();
+
         // Show transcript controls
         elements.transcriptControls.style.display = 'flex';
 
         // Show controls
         elements.controls.style.display = 'flex';
         elements.replayButton.disabled = false;
+        elements.newDialogueButton.disabled = false;
 
         // Show quiz if available
         if (state.quizQuestions && state.quizQuestions.length > 0 && !state.quizShown) {
@@ -635,6 +815,11 @@ async function handleSaveApiKey() {
         saveApiKey(key);
         hideApiKeyModal();
         setUIState(UI_STATES.INITIAL);
+
+        // Initialize IndexedDB
+        openDatabase().catch(err => {
+            console.warn('Failed to open IndexedDB:', err);
+        });
     } else {
         elements.apiKeyError.textContent = 'Invalid API key. Please check and try again.';
         elements.apiKeyError.style.display = 'block';
@@ -756,6 +941,11 @@ function init() {
     if (loadApiKey()) {
         hideApiKeyModal();
         setUIState(UI_STATES.INITIAL);
+
+        // Initialize IndexedDB
+        openDatabase().catch(err => {
+            console.warn('Failed to open IndexedDB:', err);
+        });
     } else {
         showApiKeyModal();
     }
