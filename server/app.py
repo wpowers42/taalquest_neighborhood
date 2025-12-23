@@ -19,6 +19,17 @@ load_dotenv(Path(__file__).parent.parent / ".env")
 app = Flask(__name__)
 CORS(app)  # Enable CORS for localhost frontend
 
+# Load locations
+locations_file = Path(__file__).parent.parent / "data" / "locations.json"
+with open(locations_file, "r") as f:
+    LOCATIONS = json.load(f)
+
+# Load characters
+characters_file = Path(__file__).parent.parent / "data" / "characters.json"
+with open(characters_file, "r") as f:
+    CHARACTERS_DATA = json.load(f)
+    CHARACTERS = CHARACTERS_DATA.get("characters", [])
+
 # Initialize OpenAI client
 openai_key = os.getenv("OPENAI_API_KEY")
 if not openai_key:
@@ -26,13 +37,9 @@ if not openai_key:
 
 ai_client = OpenAIClient(
     api_key=openai_key,
-    audio_cache_dir=str(Path(__file__).parent.parent / "generated" / "audio")
+    audio_cache_dir=str(Path(__file__).parent.parent / "generated" / "audio"),
+    characters_data=CHARACTERS
 )
-
-# Load locations
-locations_file = Path(__file__).parent.parent / "data" / "locations.json"
-with open(locations_file, "r") as f:
-    LOCATIONS = json.load(f)
 
 
 @app.route("/api/locations", methods=["GET"])
@@ -41,14 +48,21 @@ def get_locations():
     return jsonify(LOCATIONS)
 
 
+@app.route("/api/characters", methods=["GET"])
+def get_characters():
+    """Get all neighborhood characters."""
+    return jsonify(CHARACTERS)
+
+
 @app.route("/api/generate-scenario", methods=["POST"])
 def generate_scenario():
     """Generate a complete scenario with script and audio.
 
     Request body:
         {
-            "location_id": "bakkerij_centrum",
-            "exclude_location_id": "previous_id"  # optional
+            "location_id": "bakkerij_centrum",  # optional, specific location
+            "exclude_location_id": "previous_id",  # optional
+            "unlocked_location_ids": ["id1", "id2", ...]  # optional, filter to unlocked only
         }
 
     Returns:
@@ -59,16 +73,32 @@ def generate_scenario():
         }
     """
     try:
-        data = request.get_json()
+        data = request.get_json() or {}
         location_id = data.get("location_id")
         exclude_id = data.get("exclude_location_id")
+        unlocked_ids = data.get("unlocked_location_ids")
 
         # If no location specified, choose random
         if not location_id:
-            available = [loc for loc in LOCATIONS if loc["id"] != exclude_id]
-            if not available:
-                available = LOCATIONS
+            # Start with all locations
+            available = LOCATIONS
+
+            # Filter by unlocked locations if provided
+            if unlocked_ids:
+                available = [loc for loc in available if loc["id"] in unlocked_ids]
+                if not available:
+                    # Fallback if somehow no unlocked locations
+                    available = LOCATIONS
+
+            # Exclude previous location
+            if exclude_id:
+                available = [loc for loc in available if loc["id"] != exclude_id]
+                if not available:
+                    # If we excluded everything, use all unlocked
+                    available = [loc for loc in LOCATIONS if loc["id"] in (unlocked_ids or [])] or LOCATIONS
+
             location = random.choice(available)
+            print(f"Selected location: {location['name']} from {len(available)} available locations")
         else:
             location = next((loc for loc in LOCATIONS if loc["id"] == location_id), None)
             if not location:
@@ -171,4 +201,5 @@ def health():
 if __name__ == "__main__":
     print("Starting TaalQuest Flask backend...")
     print(f"Locations loaded: {len(LOCATIONS)}")
+    print(f"Characters loaded: {len(CHARACTERS)}")
     app.run(host="0.0.0.0", port=5000, debug=True)

@@ -3,180 +3,351 @@
     "id": "bakkerij_centrum",
     "name": "Bakkerij De Gouden Korrel",
     "type": "bakkerij",
-    "description": "A traditional Dutch bakery in the town center"
+    "description": "A traditional Dutch bakery in the town center",
+    "initially_unlocked": true,
+    "unlock_condition": null,
+    "character_associations": ["femke_janssen", "sanne_bakker", "emma_jansen"]
   },
   {
     "id": "albert_heijn",
     "name": "Albert Heijn Supermarkt",
     "type": "supermarkt",
-    "description": "Local supermarket chain"
+    "description": "Local supermarket chain",
+    "initially_unlocked": true,
+    "unlock_condition": null,
+    "character_associations": ["marieke_koster", "nina_meijer", "anouk_peters", "thomas_koster"]
   },
   {
     "id": "griftpark",
     "name": "Griftpark Utrecht",
     "type": "park",
-    "description": "A peaceful Utrecht neighborhood park with benches, walking paths, and a playground"
+    "description": "A peaceful Utrecht neighborhood park with benches, walking paths, and a playground",
+    "initially_unlocked": true,
+    "unlock_condition": null,
+    "character_associations": ["sanne_bakker", "pieter_de_vries", "hendrik_smit", "lars_van_dijk", "lisa_chen", "emma_jansen", "julia_koster", "anna_de_wit", "david_klein", "anouk_peters", "willem_de_jong"]
   },
   {
     "id": "cafe_de_hoek",
     "name": "Café De Hoek",
     "type": "cafe",
-    "description": "A cozy corner café serving coffee and traditional Dutch treats"
-  },
-  {
-    "id": "bushalte_centraal",
-    "name": "Bushalte Centraal Station",
-    "type": "bushalte",
-    "description": "Main bus stop near the central station"
-  },
-  {
-    "id": "apotheek_gezondheid",
-    "name": "Apotheek Gezondheid",
-    "type": "apotheek",
-    "description": "Neighborhood pharmacy"
-  },
-  {
-    "id": "bibliotheek",
-    "name": "Openbare Bibliotheek",
-    "type": "bibliotheek",
-    "description": "Public library with reading areas and computer access"
-  },
-  {
-    "id": "markt",
-    "name": "Weekmarkt",
-    "type": "markt",
-    "description": "Weekly outdoor market with fresh produce and local goods"
-  },
-  {
-    "id": "fietsenwinkel",
-    "name": "Fietsenwinkel De Wieleman",
-    "type": "fietsenwinkel",
-    "description": "Bicycle shop with repairs and rentals"
-  },
-  {
-    "id": "postkantoor",
-    "name": "PostNL Postkantoor",
-    "type": "postkantoor",
-    "description": "Local post office for mail and packages"
-  },
-  {
-    "id": "slagerij",
-    "name": "Slagerij Van Dijk",
-    "type": "slagerij",
-    "description": "Traditional Dutch butcher shop"
-  },
-  {
-    "id": "bloemenwinkel",
-    "name": "Bloemen & Planten",
-    "type": "bloemenwinkel",
-    "description": "Flower shop with fresh bouquets and potted plants"
-  },
-  {
-    "id": "school",
-    "name": "Basisschool De Regenboog",
-    "type": "school",
-    "description": "Elementary school playground area"
-  },
-  {
-    "id": "sporthal",
-    "name": "Sporthal Olympia",
-    "type": "sporthal",
-    "description": "Indoor sports hall for basketball and volleyball"
-  },
-  {
-    "id": "restaurant",
-    "name": "Restaurant Het Gezellige Hoekje",
-    "type": "restaurant",
-    "description": "Small family restaurant serving Dutch cuisine"
-  },
-  {
-    "id": "huisarts_utrecht",
-    "name": "Huisartsenpraktijk Utrecht Centrum",
-    "type": "huisarts",
-    "description": "Family doctor's office in Utrecht for medical appointments and consultations"
-  },
-  {
-    "id": "utrecht_centraal",
-    "name": "Utrecht Centraal Station",
-    "type": "treinstation",
-    "description": "Main train station in Utrecht with ticket counters, platforms, and travel information"
-  },
-  {
-    "id": "school_dropoff",
-    "name": "Basisschool De Regenboog - Ingang",
-    "type": "school_entrance",
-    "description": "Elementary school entrance during morning drop-off or afternoon pickup time with parents and children"
+    "description": "A cozy corner café serving coffee and traditional Dutch treats",
+    "initially_unlocked": true,
+    "unlock_condition": null,
+    "character_associations": ["emma_jansen", "lars_van_dijk", "sanne_bakker", "pieter_de_vries", "sophie_vermeer", "thomas_koster", "hendrik_smit", "femke_janssen", "julia_koster", "anna_de_wit", "nina_meijer", "david_klein", "willem_de_jong", "lisa_chen"]
   },
   {
     "id": "buurt_straat",
     "name": "Woonstraat Utrecht",
     "type": "neighborhood_street",
-    "description": "Residential street in Utrecht where neighbors meet and chat about daily life"
+    "description": "Residential street in Utrecht where neighbors meet and chat about daily life",
+    "initially_unlocked": true,
+    "unlock_condition": null,
+    "character_associations": ["marieke_koster", "thomas_koster", "julia_koster", "hendrik_smit", "lisa_chen", "willem_de_jong"]
+  },
+  {
+    "id": "bushalte_centraal",
+    "name": "Bushalte Centraal Station",
+    "type": "bushalte",
+    "description": "Main bus stop near the central station",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "scenarios_completed",
+      "count": 3
+    },
+    "character_associations": ["thomas_koster", "pieter_de_vries", "marieke_koster"]
+  },
+  {
+    "id": "apotheek_gezondheid",
+    "name": "Apotheek Gezondheid",
+    "type": "apotheek",
+    "description": "Neighborhood pharmacy",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "scenarios_completed",
+      "count": 5
+    },
+    "character_associations": ["nina_meijer", "sophie_vermeer", "marieke_koster"]
+  },
+  {
+    "id": "bibliotheek",
+    "name": "Openbare Bibliotheek",
+    "type": "bibliotheek",
+    "description": "Public library with reading areas and computer access",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "character_affinity",
+      "character_id": "anna_de_wit",
+      "min_affinity": 20
+    },
+    "character_associations": ["anna_de_wit", "pieter_de_vries", "willem_de_jong", "sanne_bakker", "nina_meijer", "david_klein", "sophie_vermeer"]
+  },
+  {
+    "id": "markt",
+    "name": "Weekmarkt",
+    "type": "markt",
+    "description": "Weekly outdoor market with fresh produce and local goods",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "scenarios_completed",
+      "count": 4
+    },
+    "character_associations": ["emma_jansen", "hendrik_smit", "femke_janssen", "rob_visser", "lisa_chen"]
+  },
+  {
+    "id": "fietsenwinkel",
+    "name": "Fietsenwinkel De Wieleman",
+    "type": "fietsenwinkel",
+    "description": "Bicycle shop with repairs and rentals",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "chapter_completed",
+      "chapter_id": "missing_bicycle"
+    },
+    "character_associations": ["jeroen_brouwer", "sanne_bakker", "hendrik_smit", "lisa_chen"]
+  },
+  {
+    "id": "postkantoor",
+    "name": "PostNL Postkantoor",
+    "type": "postkantoor",
+    "description": "Local post office for mail and packages",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "scenarios_completed",
+      "count": 8
+    },
+    "character_associations": ["hendrik_smit", "marieke_koster"]
+  },
+  {
+    "id": "slagerij",
+    "name": "Slagerij Van Dijk",
+    "type": "slagerij",
+    "description": "Traditional Dutch butcher shop",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "character_affinity",
+      "character_id": "rob_visser",
+      "min_affinity": 25
+    },
+    "character_associations": ["rob_visser", "femke_janssen", "thomas_koster"]
+  },
+  {
+    "id": "bloemenwinkel",
+    "name": "Bloemen & Planten",
+    "type": "bloemenwinkel",
+    "description": "Flower shop with fresh bouquets and potted plants",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "scenarios_completed",
+      "count": 6
+    },
+    "character_associations": []
+  },
+  {
+    "id": "school",
+    "name": "Basisschool De Regenboog",
+    "type": "school",
+    "description": "Elementary school playground area",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "character_affinity",
+      "character_id": "sanne_bakker",
+      "min_affinity": 30
+    },
+    "character_associations": ["sanne_bakker", "marieke_koster", "julia_koster"]
+  },
+  {
+    "id": "sporthal",
+    "name": "Sporthal Olympia",
+    "type": "sporthal",
+    "description": "Indoor sports hall for basketball and volleyball",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "scenarios_completed",
+      "count": 7
+    },
+    "character_associations": ["lars_van_dijk", "anouk_peters", "rob_visser"]
+  },
+  {
+    "id": "restaurant",
+    "name": "Restaurant Het Gezellige Hoekje",
+    "type": "restaurant",
+    "description": "Small family restaurant serving Dutch cuisine",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "scenarios_completed",
+      "count": 10
+    },
+    "character_associations": []
+  },
+  {
+    "id": "huisarts_utrecht",
+    "name": "Huisartsenpraktijk Utrecht Centrum",
+    "type": "huisarts",
+    "description": "Family doctor's office in Utrecht for medical appointments and consultations",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "character_affinity",
+      "character_id": "sophie_vermeer",
+      "min_affinity": 25
+    },
+    "character_associations": ["sophie_vermeer", "nina_meijer", "marieke_koster"]
+  },
+  {
+    "id": "utrecht_centraal",
+    "name": "Utrecht Centraal Station",
+    "type": "treinstation",
+    "description": "Main train station in Utrecht with ticket counters, platforms, and travel information",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "scenarios_completed",
+      "count": 5
+    },
+    "character_associations": ["pieter_de_vries", "thomas_koster", "jeroen_brouwer"]
+  },
+  {
+    "id": "school_dropoff",
+    "name": "Basisschool De Regenboog - Ingang",
+    "type": "school_entrance",
+    "description": "Elementary school entrance during morning drop-off or afternoon pickup time with parents and children",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "location_unlocked",
+      "location_id": "school"
+    },
+    "character_associations": ["sanne_bakker", "marieke_koster", "julia_koster"]
   },
   {
     "id": "spelletjesavond",
     "name": "Thuis - Spelletjesavond",
     "type": "home_gathering",
-    "description": "A friend's home in Utrecht during a cozy board game night with snacks and drinks"
+    "description": "A friend's home in Utrecht during a cozy board game night with snacks and drinks",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "character_affinity_total",
+      "min_total_affinity": 100
+    },
+    "character_associations": ["sanne_bakker", "emma_jansen", "pieter_de_vries"]
   },
   {
     "id": "speeltuin",
     "name": "Speeltuin Oog in Al",
     "type": "playground",
-    "description": "Children's playground in Utrecht Oost where parents supervise kids playing"
+    "description": "Children's playground in Utrecht Oost where parents supervise kids playing",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "scenarios_completed",
+      "count": 9
+    },
+    "character_associations": ["marieke_koster", "julia_koster"]
   },
   {
     "id": "tandarts",
     "name": "Tandartspraktijk Utrecht",
     "type": "dentist",
-    "description": "Dental practice in Utrecht for checkups and appointments"
+    "description": "Dental practice in Utrecht for checkups and appointments",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "scenarios_completed",
+      "count": 12
+    },
+    "character_associations": []
   },
   {
     "id": "kapper",
     "name": "Kapsalon Utrecht",
     "type": "hair_salon",
-    "description": "Hair salon in Utrecht for haircuts and styling"
+    "description": "Hair salon in Utrecht for haircuts and styling",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "scenarios_completed",
+      "count": 11
+    },
+    "character_associations": []
   },
   {
     "id": "gemeentehuis",
     "name": "Gemeentehuis Utrecht",
     "type": "city_hall",
-    "description": "Utrecht city hall for administrative services like ID cards and permits"
+    "description": "Utrecht city hall for administrative services like ID cards and permits",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "scenarios_completed",
+      "count": 15
+    },
+    "character_associations": []
   },
   {
     "id": "zwembad",
     "name": "Zwembad De Krommerijn",
     "type": "swimming_pool",
-    "description": "Public swimming pool in Utrecht for recreation and swimming lessons"
+    "description": "Public swimming pool in Utrecht for recreation and swimming lessons",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "scenarios_completed",
+      "count": 8
+    },
+    "character_associations": ["lars_van_dijk", "sophie_vermeer", "marieke_koster", "julia_koster", "anouk_peters"]
   },
   {
     "id": "buurthuis",
     "name": "Buurthuis De Verbinding",
     "type": "community_center",
-    "description": "Neighborhood community center in Utrecht with activities and social gatherings"
+    "description": "Neighborhood community center in Utrecht with activities and social gatherings",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "chapter_completed",
+      "chapter_id": "secret_admirer"
+    },
+    "character_associations": []
   },
   {
     "id": "dierenarts",
     "name": "Dierenkliniek Utrecht",
     "type": "veterinarian",
-    "description": "Veterinary clinic in Utrecht for pet care and checkups"
+    "description": "Veterinary clinic in Utrecht for pet care and checkups",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "scenarios_completed",
+      "count": 13
+    },
+    "character_associations": ["sanne_bakker"]
   },
   {
     "id": "museum",
     "name": "Centraal Museum Utrecht",
     "type": "museum",
-    "description": "Art and history museum in Utrecht with exhibitions and cultural events"
+    "description": "Art and history museum in Utrecht with exhibitions and cultural events",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "character_affinity",
+      "character_id": "willem_de_jong",
+      "min_affinity": 30
+    },
+    "character_associations": ["willem_de_jong", "lisa_chen"]
   },
   {
     "id": "boekwinkel",
     "name": "Boekhandel Broese",
     "type": "bookstore",
-    "description": "Independent bookstore in Utrecht with Dutch and international books"
+    "description": "Independent bookstore in Utrecht with Dutch and international books",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "character_affinity",
+      "character_id": "david_klein",
+      "min_affinity": 25
+    },
+    "character_associations": ["david_klein", "anna_de_wit", "pieter_de_vries", "willem_de_jong", "lisa_chen"]
   },
   {
     "id": "parkeergarage",
     "name": "Parkeergarage Hoog Catharijne",
     "type": "parking_garage",
-    "description": "Parking garage in Utrecht city center near the station"
+    "description": "Parking garage in Utrecht city center near the station",
+    "initially_unlocked": false,
+    "unlock_condition": {
+      "type": "scenarios_completed",
+      "count": 14
+    },
+    "character_associations": ["thomas_koster"]
   }
 ]

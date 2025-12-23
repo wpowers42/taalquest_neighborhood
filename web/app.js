@@ -13,6 +13,7 @@ const DEV_MODE = urlParams.get('dev') === 'true';
 
 // Application state
 const state = {
+    // Session state (not persisted)
     locations: [],
     currentLocation: null,
     currentScript: null,
@@ -20,13 +21,28 @@ const state = {
     lastLocationId: null,
     isPlaying: false,
     currentAudioIndex: 0,
-    // Quiz state
+    // Quiz state (not persisted)
     quizQuestions: [],
     currentQuestionIndex: 0,
     quizScore: 0,
     quizAnswered: false,
     quizShown: false,
+
+    // Persistent game progress (saved to localStorage)
+    unlockedLocations: ['bakkerij_centrum', 'albert_heijn', 'griftpark', 'cafe_de_hoek', 'buurt_straat'], // Start with 5 unlocked
+    characterAffinity: {}, // {character_id: affinity_score}
+    completedChapters: [], // ['missing_bicycle', ...]
+    completedScenarios: 0,
+    collectedClues: [], // [{id, text_nl, text_en, category, related_to}, ...]
+    achievements: [], // ['chapter_1_complete', ...]
+    totalQuizScore: 0,
+    perfectScores: 0,
+    currentChapterId: 'missing_bicycle', // Currently active chapter
+    currentScenarioNumber: 1, // Current scenario in active chapter
 };
+
+// LocalStorage key
+const STORAGE_KEY = 'taalquest_progress';
 
 // DOM elements
 const elements = {
@@ -57,6 +73,189 @@ const elements = {
 
 // Audio player
 const audio = new Audio();
+
+// ============================================================================
+// PERSISTENCE SYSTEM
+// ============================================================================
+
+/**
+ * Load saved game progress from localStorage
+ */
+function loadProgress() {
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            const progress = JSON.parse(saved);
+            console.log('📥 Loaded saved progress:', progress);
+
+            // Restore persistent state
+            state.unlockedLocations = progress.unlockedLocations || state.unlockedLocations;
+            state.characterAffinity = progress.characterAffinity || {};
+            state.completedChapters = progress.completedChapters || [];
+            state.completedScenarios = progress.completedScenarios || 0;
+            state.collectedClues = progress.collectedClues || [];
+            state.achievements = progress.achievements || [];
+            state.totalQuizScore = progress.totalQuizScore || 0;
+            state.perfectScores = progress.perfectScores || 0;
+            state.currentChapterId = progress.currentChapterId || 'missing_bicycle';
+            state.currentScenarioNumber = progress.currentScenarioNumber || 1;
+
+            console.log(`✓ Progress restored: ${state.completedScenarios} scenarios, ${state.unlockedLocations.length} locations unlocked`);
+            return true;
+        } else {
+            console.log('ℹ️  No saved progress found, starting fresh');
+            return false;
+        }
+    } catch (error) {
+        console.error('Error loading progress:', error);
+        return false;
+    }
+}
+
+/**
+ * Save current game progress to localStorage
+ */
+function saveProgress() {
+    try {
+        const progress = {
+            unlockedLocations: state.unlockedLocations,
+            characterAffinity: state.characterAffinity,
+            completedChapters: state.completedChapters,
+            completedScenarios: state.completedScenarios,
+            collectedClues: state.collectedClues,
+            achievements: state.achievements,
+            totalQuizScore: state.totalQuizScore,
+            perfectScores: state.perfectScores,
+            currentChapterId: state.currentChapterId,
+            currentScenarioNumber: state.currentScenarioNumber,
+            lastSaved: new Date().toISOString(),
+        };
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+        console.log('💾 Progress saved');
+        return true;
+    } catch (error) {
+        console.error('Error saving progress:', error);
+        return false;
+    }
+}
+
+/**
+ * Clear all saved progress (for testing/reset)
+ */
+function clearProgress() {
+    localStorage.removeItem(STORAGE_KEY);
+    console.log('🗑️  Progress cleared');
+}
+
+/**
+ * Update character affinity based on quiz performance
+ * @param {Array<string>} characterIds - IDs of characters in the scenario
+ * @param {number} points - Affinity points to award (based on quiz score)
+ */
+function updateCharacterAffinity(characterIds, points) {
+    if (!characterIds || characterIds.length === 0) return;
+
+    characterIds.forEach((charId) => {
+        if (!state.characterAffinity[charId]) {
+            state.characterAffinity[charId] = 0;
+        }
+        state.characterAffinity[charId] += points;
+
+        // Cap affinity at 100
+        if (state.characterAffinity[charId] > 100) {
+            state.characterAffinity[charId] = 100;
+        }
+
+        console.log(`❤️  ${charId}: ${state.characterAffinity[charId]} affinity (+${points})`);
+    });
+
+    // Check for affinity-based unlocks after updating
+    checkLocationUnlocks();
+}
+
+/**
+ * Check if any new locations should be unlocked based on current progress
+ * @returns {Array<object>} Newly unlocked locations
+ */
+function checkLocationUnlocks() {
+    const newlyUnlocked = [];
+
+    state.locations.forEach((location) => {
+        // Skip if already unlocked
+        if (state.unlockedLocations.includes(location.id)) return;
+
+        // Skip if initially unlocked (should already be in unlocked list)
+        if (location.initially_unlocked) return;
+
+        // Skip if no unlock condition
+        if (!location.unlock_condition) return;
+
+        let shouldUnlock = false;
+        const condition = location.unlock_condition;
+
+        switch (condition.type) {
+            case 'scenarios_completed':
+                shouldUnlock = state.completedScenarios >= condition.count;
+                break;
+
+            case 'character_affinity':
+                const charAffinity = state.characterAffinity[condition.character_id] || 0;
+                shouldUnlock = charAffinity >= condition.min_affinity;
+                break;
+
+            case 'chapter_completed':
+                shouldUnlock = state.completedChapters.includes(condition.chapter_id);
+                break;
+
+            case 'location_unlocked':
+                shouldUnlock = state.unlockedLocations.includes(condition.location_id);
+                break;
+
+            case 'character_affinity_total':
+                const totalAffinity = Object.values(state.characterAffinity).reduce((sum, val) => sum + val, 0);
+                shouldUnlock = totalAffinity >= condition.min_total_affinity;
+                break;
+        }
+
+        if (shouldUnlock) {
+            state.unlockedLocations.push(location.id);
+            newlyUnlocked.push(location);
+            console.log(`🔓 Unlocked location: ${location.name} (${location.id})`);
+        }
+    });
+
+    if (newlyUnlocked.length > 0) {
+        saveProgress();
+    }
+
+    return newlyUnlocked;
+}
+
+/**
+ * Get only unlocked locations for scenario selection
+ * @returns {Array<object>} Filtered array of unlocked locations
+ */
+function getUnlockedLocations() {
+    return state.locations.filter((loc) => state.unlockedLocations.includes(loc.id));
+}
+
+/**
+ * Add achievement if not already earned
+ * @param {string} achievementId - Achievement ID to award
+ */
+function awardAchievement(achievementId) {
+    if (!state.achievements.includes(achievementId)) {
+        state.achievements.push(achievementId);
+        console.log(`🏆 Achievement earned: ${achievementId}`);
+        saveProgress();
+        // TODO: Show achievement toast notification
+    }
+}
+
+// ============================================================================
+// APPLICATION INITIALIZATION
+// ============================================================================
 
 /**
  * Initialize the application
@@ -115,9 +314,16 @@ async function init() {
         subtitle.style.fontWeight = 'bold';
     }
 
+    // Load saved progress from localStorage
+    loadProgress();
+
     // Load locations and generate first scenario
     try {
         await fetchLocations();
+
+        // Check for any unlocks after loading locations
+        checkLocationUnlocks();
+
         await loadNewScenario();
     } catch (error) {
         setUIState('error', error.message);
@@ -178,8 +384,10 @@ async function loadNewScenario() {
             // Generate new scenario via OpenAI API
             const requestBody = {
                 exclude_location_id: state.lastLocationId,
+                unlocked_location_ids: state.unlockedLocations,
             };
             console.log('  → Request body:', requestBody);
+            console.log(`  → ${state.unlockedLocations.length} locations unlocked`);
 
             response = await fetch(`${API_BASE_URL}${endpoint}`, {
                 method: 'POST',
@@ -530,6 +738,32 @@ function showQuizResults() {
         elements.quizMessage.textContent = 'Keep trying! Blijf oefenen! 📚';
     }
 
+    // Update persistent progress
+    state.totalQuizScore += state.quizScore;
+    if (state.quizScore === state.quizQuestions.length) {
+        state.perfectScores++;
+    }
+
+    // Award character affinity based on quiz performance
+    if (state.currentScript && state.currentScript.characters) {
+        const characterIds = state.currentScript.characters.map((char) => char.id);
+
+        // Affinity points: Perfect=10, Good=5, Poor=0
+        let affinityPoints = 0;
+        if (state.quizScore === state.quizQuestions.length) {
+            affinityPoints = 10; // Perfect score
+        } else if (state.quizScore >= Math.ceil(state.quizQuestions.length * 0.7)) {
+            affinityPoints = 5; // Good score (70%+)
+        }
+
+        if (affinityPoints > 0) {
+            updateCharacterAffinity(characterIds, affinityPoints);
+        }
+    }
+
+    // Save progress after quiz completion
+    saveProgress();
+
     // Show replay and continue buttons
     setUIState('finished');
 }
@@ -538,6 +772,20 @@ function showQuizResults() {
  * Continue to next scenario (also hides quiz and transcripts)
  */
 async function handleContinue() {
+    // Increment completed scenarios count
+    state.completedScenarios++;
+    console.log(`📊 Completed scenarios: ${state.completedScenarios}`);
+
+    // Check for scenario-count-based unlocks
+    const newlyUnlocked = checkLocationUnlocks();
+    if (newlyUnlocked.length > 0) {
+        // TODO: Show unlock notification
+        console.log(`🎉 ${newlyUnlocked.length} new location(s) unlocked!`);
+    }
+
+    // Save progress
+    saveProgress();
+
     // Hide quiz section and transcript
     elements.quizSection.style.display = 'none';
     elements.transcriptControls.style.display = 'none';

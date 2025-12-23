@@ -1,0 +1,964 @@
+{
+  "characters": [
+    {
+      "id": "sanne_bakker",
+      "name": "Sanne Bakker",
+      "age": 34,
+      "gender": "F",
+      "occupation": "Elementary School Teacher",
+      "personality": ["friendly", "curious", "romantic", "slightly shy"],
+      "voice_id": 0,
+      "locations": [
+        "park_bloemenbuurt",
+        "bakkerij_centrum",
+        "cafe_de_hoek",
+        "school_oranje",
+        "bibliotheek_wijk"
+      ],
+      "relationships": {
+        "pieter_de_vries": {
+          "type": "romantic_interest",
+          "status": "secret_crush",
+          "intensity": "high",
+          "description": "Has harbored feelings for months but too shy to confess"
+        },
+        "emma_jansen": {
+          "type": "best_friend",
+          "status": "confidante",
+          "intensity": "very_high",
+          "description": "Tells Emma everything, seeks romantic advice"
+        },
+        "femke_janssen": {
+          "type": "mentor",
+          "status": "friendly",
+          "intensity": "medium",
+          "description": "Femke gives Sanne life advice and baked goods"
+        },
+        "julia_koster": {
+          "type": "student",
+          "status": "concerned",
+          "intensity": "medium",
+          "description": "Notices Julia's rebellious behavior, wants to help"
+        }
+      },
+      "backstory": "Grew up in this neighborhood and returned after university to teach. Lives alone with her cat, Poes. Dreams of starting a family but struggles with dating.",
+      "secrets": [
+        "Has a secret crush on Pieter that everyone knows except him",
+        "Once saw Jeroen taking something suspicious from the bike rack",
+        "Writes romantic poetry in Dutch that she's never shown anyone"
+      ],
+      "drama_potential": [
+        "Will she finally confess to Pieter?",
+        "What if someone else asks Pieter out first?",
+        "Her friendship with Emma tested when Emma meddles too much"
+      ],
+      "vocabulary_specialty": ["education", "children", "emotions", "daily_routines"]
+    },
+    {
+      "id": "pieter_de_vries",
+      "name": "Pieter de Vries",
+      "age": 37,
+      "gender": "M",
+      "occupation": "Software Engineer",
+      "personality": ["intelligent", "awkward", "kind", "oblivious"],
+      "voice_id": 1,
+      "locations": [
+        "cafe_de_hoek",
+        "park_bloemenbuurt",
+        "bibliotheek_wijk",
+        "supermarkt_ah",
+        "station_utrecht"
+      ],
+      "relationships": {
+        "sanne_bakker": {
+          "type": "friend",
+          "status": "comfortable",
+          "intensity": "medium",
+          "description": "Enjoys talking to Sanne, completely unaware of her feelings"
+        },
+        "emma_jansen": {
+          "type": "acquaintance",
+          "status": "casual",
+          "intensity": "low",
+          "description": "Regular café customer, Emma knows his coffee order"
+        },
+        "david_klein": {
+          "type": "friend",
+          "status": "book_buddies",
+          "intensity": "medium",
+          "description": "Bond over science fiction novels and chess"
+        },
+        "anna_de_wit": {
+          "type": "acquaintance",
+          "status": "respectful",
+          "intensity": "low",
+          "description": "Frequent library visitor, appreciates her book recommendations"
+        }
+      },
+      "backstory": "Moved to the neighborhood two years ago for work. Spends most time coding or reading. His last relationship ended badly, making him cautious. Genuinely nice but terrible at reading social cues.",
+      "secrets": [
+        "Secretly writes code for a dating app but never uses it",
+        "Has noticed Sanne but thinks she's out of his league",
+        "His apartment is a mess but he pretends he has it together"
+      ],
+      "drama_potential": [
+        "Will he realize Sanne's feelings before it's too late?",
+        "Another woman might ask him out, forcing Sanne's hand",
+        "Emma's matchmaking schemes could backfire spectacularly"
+      ],
+      "vocabulary_specialty": ["technology", "work", "hobbies", "food_ordering"]
+    },
+    {
+      "id": "emma_jansen",
+      "name": "Emma Jansen",
+      "age": 42,
+      "gender": "F",
+      "occupation": "Café Owner",
+      "personality": ["outgoing", "gossipy", "warm", "meddling"],
+      "voice_id": 0,
+      "locations": [
+        "cafe_de_hoek",
+        "markt_centrum",
+        "bakkerij_centrum",
+        "park_bloemenbuurt"
+      ],
+      "relationships": {
+        "sanne_bakker": {
+          "type": "best_friend",
+          "status": "confidante",
+          "intensity": "very_high",
+          "description": "Knows all of Sanne's secrets, actively trying to help her love life"
+        },
+        "lars_van_dijk": {
+          "type": "employee",
+          "status": "concerned",
+          "intensity": "medium",
+          "description": "He works for her, she worries about his flirtatious behavior"
+        },
+        "rob_visser": {
+          "type": "old_flame",
+          "status": "complicated",
+          "intensity": "medium",
+          "description": "They dated 20 years ago, unresolved feelings remain"
+        },
+        "femke_janssen": {
+          "type": "friend",
+          "status": "suppliers",
+          "intensity": "high",
+          "description": "Femke supplies pastries, they chat daily about neighborhood news"
+        },
+        "pieter_de_vries": {
+          "type": "customer",
+          "status": "regular",
+          "intensity": "low",
+          "description": "Knows his order by heart, trying to set him up with Sanne"
+        }
+      },
+      "backstory": "Opened the café 15 years ago after her divorce. No children but considers the neighborhood her family. Has a sixth sense for drama and relationships. Everyone tells her everything.",
+      "secrets": [
+        "Still has feelings for Rob but too proud to admit it",
+        "Knows about Jeroen's financial troubles from overheard conversations",
+        "Secretly plays matchmaker for half the neighborhood"
+      ],
+      "drama_potential": [
+        "Her meddling could ruin Sanne's chances with Pieter",
+        "Lars's flirting might cause problems for the café's reputation",
+        "Confrontation with Rob about their past"
+      ],
+      "vocabulary_specialty": ["food", "drinks", "social_interaction", "gossip"]
+    },
+    {
+      "id": "lars_van_dijk",
+      "name": "Lars van Dijk",
+      "age": 29,
+      "gender": "M",
+      "occupation": "Barista",
+      "personality": ["charming", "flirtatious", "immature", "fun-loving"],
+      "voice_id": 1,
+      "locations": [
+        "cafe_de_hoek",
+        "sporthal_centrum",
+        "park_bloemenbuurt",
+        "zwembad_wijk"
+      ],
+      "relationships": {
+        "emma_jansen": {
+          "type": "boss",
+          "status": "friendly",
+          "intensity": "medium",
+          "description": "She tolerates his behavior but draws lines"
+        },
+        "sophie_vermeer": {
+          "type": "romantic_interest",
+          "status": "pursuing",
+          "intensity": "high",
+          "description": "Actively flirting, she's resistant but tempted"
+        },
+        "julia_koster": {
+          "type": "uncomfortable",
+          "status": "unaware",
+          "intensity": "low",
+          "description": "Doesn't realize the teenage girl has a crush on him"
+        },
+        "anouk_peters": {
+          "type": "friend",
+          "status": "workout_buddies",
+          "intensity": "medium",
+          "description": "They work out together, she keeps him grounded"
+        }
+      },
+      "backstory": "Popular in university, hasn't quite grown up. Works at the café while 'figuring things out.' Lives with roommates and enjoys the bachelor life. Doesn't take relationships seriously yet.",
+      "secrets": [
+        "Actually has a degree in psychology but doesn't use it",
+        "More insecure about his life choices than he lets on",
+        "Julia's crush makes him very uncomfortable but he doesn't know how to handle it"
+      ],
+      "drama_potential": [
+        "His pursuit of Sophie could lead to complicated consequences",
+        "Julia's crush could become a serious problem",
+        "Emma might fire him if he causes drama with customers"
+      ],
+      "vocabulary_specialty": ["sports", "social_life", "casual_conversation", "flirting"]
+    },
+    {
+      "id": "sophie_vermeer",
+      "name": "Sophie Vermeer",
+      "age": 31,
+      "gender": "F",
+      "occupation": "General Practitioner",
+      "personality": ["professional", "cautious", "intelligent", "guarded"],
+      "voice_id": 0,
+      "locations": [
+        "huisarts_praktijk",
+        "apotheek_kerkstraat",
+        "cafe_de_hoek",
+        "zwembad_wijk",
+        "bibliotheek_wijk"
+      ],
+      "relationships": {
+        "lars_van_dijk": {
+          "type": "potential_romance",
+          "status": "resisting",
+          "intensity": "medium",
+          "description": "Finds him attractive but thinks he's too immature"
+        },
+        "nina_meijer": {
+          "type": "colleague",
+          "status": "professional",
+          "intensity": "medium",
+          "description": "Works with her, notices Nina's stress"
+        },
+        "emma_jansen": {
+          "type": "acquaintance",
+          "status": "casual",
+          "intensity": "low",
+          "description": "Regular café customer, Emma tries to give relationship advice"
+        }
+      },
+      "backstory": "Recently divorced after husband cheated. Threw herself into work. Lonely but afraid to trust again. Moved to this neighborhood for a fresh start.",
+      "secrets": [
+        "Still wears her wedding ring on a chain under her clothes",
+        "More interested in Lars than she admits, but scared",
+        "Considering leaving medicine due to burnout"
+      ],
+      "drama_potential": [
+        "Will she take a chance on Lars or push him away?",
+        "Her ex-husband might show up",
+        "Professional crisis intersecting with personal life"
+      ],
+      "vocabulary_specialty": ["medical", "health", "emotions", "professional_life"]
+    },
+    {
+      "id": "marieke_koster",
+      "name": "Marieke Koster",
+      "age": 45,
+      "gender": "F",
+      "occupation": "Marketing Manager & Mother",
+      "personality": ["stressed", "organized", "protective", "overwhelmed"],
+      "voice_id": 0,
+      "locations": [
+        "supermarkt_ah",
+        "school_oranje",
+        "zwembad_wijk",
+        "apotheek_kerkstraat",
+        "woonstraat_laan"
+      ],
+      "relationships": {
+        "thomas_koster": {
+          "type": "spouse",
+          "status": "strained",
+          "intensity": "high",
+          "description": "Marriage suffering from lack of time and communication"
+        },
+        "julia_koster": {
+          "type": "daughter",
+          "status": "conflict",
+          "intensity": "very_high",
+          "description": "Worried about Julia's rebellious phase, constant arguments"
+        },
+        "anouk_peters": {
+          "type": "friend",
+          "status": "supportive",
+          "intensity": "medium",
+          "description": "Anouk encourages her to take care of herself"
+        },
+        "sanne_bakker": {
+          "type": "acquaintance",
+          "status": "concerned",
+          "intensity": "low",
+          "description": "Sanne is Julia's teacher, they discuss her behavior"
+        }
+      },
+      "backstory": "Juggling demanding career, three kids, and PTA responsibilities. Feels like she's failing at everything. Marriage to Thomas is on autopilot. Desperately needs a break but won't admit it.",
+      "secrets": [
+        "Fantasizes about running away and starting over",
+        "Doesn't know Julia is secretly dating Lars (inappropriate)",
+        "Takes anti-anxiety medication she hasn't told Thomas about"
+      ],
+      "drama_potential": [
+        "Will her marriage survive the stress?",
+        "Discovery of Julia's crush/relationship could explode",
+        "Breaking point leading to major life changes"
+      ],
+      "vocabulary_specialty": ["family", "shopping", "scheduling", "stress_expressions"]
+    },
+    {
+      "id": "thomas_koster",
+      "name": "Thomas Koster",
+      "age": 47,
+      "gender": "M",
+      "occupation": "Accountant",
+      "personality": ["workaholic", "distant", "logical", "well-meaning"],
+      "voice_id": 1,
+      "locations": [
+        "woonstraat_laan",
+        "station_utrecht",
+        "cafe_de_hoek",
+        "parkeergarage_stationsplein"
+      ],
+      "relationships": {
+        "marieke_koster": {
+          "type": "spouse",
+          "status": "strained",
+          "intensity": "high",
+          "description": "Loves her but doesn't realize how disconnected they've become"
+        },
+        "julia_koster": {
+          "type": "daughter",
+          "status": "distant",
+          "intensity": "medium",
+          "description": "Barely sees her, doesn't notice her acting out"
+        },
+        "pieter_de_vries": {
+          "type": "acquaintance",
+          "status": "commute_buddies",
+          "intensity": "low",
+          "description": "Sometimes chat on the train to Utrecht"
+        }
+      },
+      "backstory": "Working 60-hour weeks to provide for family. Thinks money equals love. Missing all the signs that his family is falling apart. Genuinely believes he's doing the right thing.",
+      "secrets": [
+        "Secretly knows the marriage is in trouble but doesn't know how to fix it",
+        "Has been offered a promotion requiring even more hours",
+        "Feels like a failure as a father"
+      ],
+      "drama_potential": [
+        "Wake-up call when marriage crisis hits",
+        "Choice between career and family",
+        "Discovery of what Julia's been up to"
+      ],
+      "vocabulary_specialty": ["work", "finance", "commuting", "formal_conversation"]
+    },
+    {
+      "id": "julia_koster",
+      "name": "Julia Koster",
+      "age": 16,
+      "gender": "F",
+      "occupation": "Student",
+      "personality": ["rebellious", "attention-seeking", "confused", "artistic"],
+      "voice_id": 0,
+      "locations": [
+        "school_oranje",
+        "cafe_de_hoek",
+        "park_bloemenbuurt",
+        "woonstraat_laan",
+        "zwembad_wijk"
+      ],
+      "relationships": {
+        "marieke_koster": {
+          "type": "mother",
+          "status": "conflict",
+          "intensity": "very_high",
+          "description": "Constant fighting, feels misunderstood"
+        },
+        "thomas_koster": {
+          "type": "father",
+          "status": "distant",
+          "intensity": "medium",
+          "description": "Barely sees him, feels ignored"
+        },
+        "lars_van_dijk": {
+          "type": "crush",
+          "status": "inappropriate",
+          "intensity": "high",
+          "description": "Intense teenage crush on older barista, unhealthy"
+        },
+        "sanne_bakker": {
+          "type": "teacher",
+          "status": "wary",
+          "intensity": "low",
+          "description": "Sanne is one of the few adults who seems to care"
+        }
+      },
+      "backstory": "Smart but feeling neglected by workaholic parents. Acting out to get attention. Crush on Lars is her way of seeking validation from an older man. Talented artist but no one notices.",
+      "secrets": [
+        "Spends hours at the café hoping to see Lars",
+        "Skipping classes and grades are dropping",
+        "Secretly applies to art school without telling parents"
+      ],
+      "drama_potential": [
+        "Inappropriate crush on Lars coming to light",
+        "Getting caught skipping school",
+        "Confrontation with parents about art school vs their plans"
+      ],
+      "vocabulary_specialty": ["school", "teenager_slang", "emotions", "hobbies"]
+    },
+    {
+      "id": "hendrik_smit",
+      "name": "Hendrik Smit",
+      "age": 68,
+      "gender": "M",
+      "occupation": "Retired Postman",
+      "personality": ["observant", "gossipy", "friendly", "nosy"],
+      "voice_id": 1,
+      "locations": [
+        "park_bloemenbuurt",
+        "woonstraat_laan",
+        "cafe_de_hoek",
+        "bakkerij_centrum",
+        "markt_centrum"
+      ],
+      "relationships": {
+        "anna_de_wit": {
+          "type": "old_friend",
+          "status": "protective",
+          "intensity": "high",
+          "description": "Knows her secret past, keeps it safe"
+        },
+        "emma_jansen": {
+          "type": "friend",
+          "status": "gossip_partners",
+          "intensity": "medium",
+          "description": "They exchange neighborhood news daily"
+        },
+        "jeroen_brouwer": {
+          "type": "suspicious",
+          "status": "investigating",
+          "intensity": "medium",
+          "description": "Noticed Jeroen's strange behavior with bicycles"
+        },
+        "willem_de_jong": {
+          "type": "friend",
+          "status": "chess_partners",
+          "intensity": "medium",
+          "description": "Play chess weekly, discuss old times"
+        }
+      },
+      "backstory": "Delivered mail in this neighborhood for 40 years. Knows everyone's business. Since retirement, appointed himself unofficial neighborhood watch. Widower, lonely but won't admit it.",
+      "secrets": [
+        "Knows about Anna's past life in Amsterdam",
+        "Has evidence of Jeroen's bicycle theft scheme",
+        "Secretly lonely and uses gossip to stay connected"
+      ],
+      "drama_potential": [
+        "Will he expose Jeroen's bicycle operation?",
+        "His knowledge of Anna's past could cause problems",
+        "Heart problems he's hiding from everyone"
+      ],
+      "vocabulary_specialty": ["neighborhood_life", "observations", "past_tense_stories", "daily_routines"]
+    },
+    {
+      "id": "anna_de_wit",
+      "name": "Anna de Wit",
+      "age": 52,
+      "gender": "F",
+      "occupation": "Librarian",
+      "personality": ["quiet", "mysterious", "kind", "secretive"],
+      "voice_id": 0,
+      "locations": [
+        "bibliotheek_wijk",
+        "cafe_de_hoek",
+        "park_bloemenbuurt",
+        "boekhandel_voorstraat"
+      ],
+      "relationships": {
+        "hendrik_smit": {
+          "type": "old_friend",
+          "status": "trusting",
+          "intensity": "high",
+          "description": "He's one of few who knows her full story"
+        },
+        "willem_de_jong": {
+          "type": "colleague",
+          "status": "friendly",
+          "intensity": "medium",
+          "description": "Bond over books, quiet understanding"
+        },
+        "pieter_de_vries": {
+          "type": "patron",
+          "status": "helpful",
+          "intensity": "low",
+          "description": "Recommends books, appreciates his curiosity"
+        },
+        "david_klein": {
+          "type": "acquaintance",
+          "status": "professional",
+          "intensity": "low",
+          "description": "Coordinates book events together"
+        }
+      },
+      "backstory": "Moved to neighborhood 10 years ago from Amsterdam. Doesn't talk about her past. Was involved in something she's running from - possibly witness protection or escaping an abusive relationship.",
+      "secrets": [
+        "Changed her name when she moved here",
+        "Was a journalist who exposed dangerous people",
+        "Still looks over her shoulder, expecting her past to catch up"
+      ],
+      "drama_potential": [
+        "Someone from her past appears in the neighborhood",
+        "Her real identity becomes known",
+        "Has to choose between hiding and helping someone"
+      ],
+      "vocabulary_specialty": ["books", "literature", "careful_speech", "evasion"]
+    },
+    {
+      "id": "jeroen_brouwer",
+      "name": "Jeroen Brouwer",
+      "age": 35,
+      "gender": "M",
+      "occupation": "Bike Shop Owner",
+      "personality": ["nervous", "defensive", "clever", "desperate"],
+      "voice_id": 1,
+      "locations": [
+        "fietsenwinkel_stationstraat",
+        "park_bloemenbuurt",
+        "cafe_de_hoek",
+        "station_utrecht"
+      ],
+      "relationships": {
+        "hendrik_smit": {
+          "type": "adversary",
+          "status": "suspicious",
+          "intensity": "medium",
+          "description": "Knows Hendrik is watching him"
+        },
+        "sanne_bakker": {
+          "type": "customer",
+          "status": "guilty",
+          "intensity": "low",
+          "description": "Feels bad about her stolen bike situation"
+        },
+        "lisa_chen": {
+          "type": "potential_ally",
+          "status": "curious",
+          "intensity": "low",
+          "description": "She's photographed something incriminating"
+        }
+      },
+      "backstory": "Inherited failing bike shop from father. Desperate to keep it running. Gambling debts. Started stealing bikes to sell parts. Feels trapped and ashamed but doesn't see a way out.",
+      "secrets": [
+        "Running a bicycle theft ring to pay debts",
+        "Owes money to dangerous people",
+        "Actually a skilled mechanic who just wants honest work"
+      ],
+      "drama_potential": [
+        "Getting caught stealing bicycles",
+        "Hendrik or Lisa exposing him",
+        "Redemption arc if someone helps him"
+      ],
+      "vocabulary_specialty": ["bicycles", "repair", "nervous_speech", "excuses"]
+    },
+    {
+      "id": "lisa_chen",
+      "name": "Lisa Chen",
+      "age": 28,
+      "gender": "F",
+      "occupation": "Photographer",
+      "personality": ["curious", "independent", "artistic", "outsider"],
+      "voice_id": 0,
+      "locations": [
+        "park_bloemenbuurt",
+        "markt_centrum",
+        "cafe_de_hoek",
+        "woonstraat_laan",
+        "museum_speelklok"
+      ],
+      "relationships": {
+        "david_klein": {
+          "type": "potential_romance",
+          "status": "developing",
+          "intensity": "medium",
+          "description": "Both lonely, both artistic, slowly connecting"
+        },
+        "jeroen_brouwer": {
+          "type": "suspicious",
+          "status": "investigating",
+          "intensity": "low",
+          "description": "Accidentally photographed something suspicious"
+        },
+        "emma_jansen": {
+          "type": "acquaintance",
+          "status": "welcoming",
+          "intensity": "low",
+          "description": "Emma tries to help her integrate into neighborhood"
+        }
+      },
+      "backstory": "Moved from Amsterdam for cheaper rent and quieter life. Freelance photographer struggling to make ends meet. Feels like an outsider in the tight-knit neighborhood. Accidentally becomes involved in bicycle mystery.",
+      "secrets": [
+        "Photos of Jeroen moving bicycles at odd hours",
+        "Lonely and questions her choice to leave Amsterdam",
+        "Developing feelings for David but afraid to seem forward"
+      ],
+      "drama_potential": [
+        "Her photos could solve or complicate the bicycle mystery",
+        "Romance with David bringing her into the community",
+        "Career opportunity forcing choice between staying and leaving"
+      ],
+      "vocabulary_specialty": ["photography", "art", "city_life", "observation"]
+    },
+    {
+      "id": "femke_janssen",
+      "name": "Femke Janssen",
+      "age": 55,
+      "gender": "F",
+      "occupation": "Bakery Owner",
+      "personality": ["warm", "motherly", "wise", "traditional"],
+      "voice_id": 0,
+      "locations": [
+        "bakkerij_centrum",
+        "markt_centrum",
+        "cafe_de_hoek",
+        "kerk_centrum"
+      ],
+      "relationships": {
+        "emma_jansen": {
+          "type": "friend",
+          "status": "close",
+          "intensity": "high",
+          "description": "Daily chats, supply pastries to café, gossip exchange"
+        },
+        "rob_visser": {
+          "type": "old_flame",
+          "status": "matchmaker",
+          "intensity": "medium",
+          "description": "Knows about their past, tries to reunite them"
+        },
+        "sanne_bakker": {
+          "type": "mentee",
+          "status": "caring",
+          "intensity": "medium",
+          "description": "Gives Sanne advice and encouragement"
+        },
+        "marieke_koster": {
+          "type": "customer",
+          "status": "concerned",
+          "intensity": "low",
+          "description": "Notices Marieke's stress, offers comfort"
+        }
+      },
+      "backstory": "Family bakery for three generations. Never married, devoted to her business. Everyone's surrogate mother. Believes in love and community. Makes the best stroopwafels in the neighborhood.",
+      "secrets": [
+        "Turned down marriage proposals to run the bakery",
+        "Sometimes regrets not having children",
+        "Secretly writes recipes with romantic names for couples"
+      ],
+      "drama_potential": [
+        "Her matchmaking could backfire",
+        "Bakery threatened by rent increase",
+        "Finally finding late-in-life romance"
+      ],
+      "vocabulary_specialty": ["baking", "food", "nurturing_language", "advice_giving"]
+    },
+    {
+      "id": "rob_visser",
+      "name": "Rob Visser",
+      "age": 61,
+      "gender": "M",
+      "occupation": "Butcher",
+      "personality": ["grumpy", "kind-hearted", "stubborn", "traditional"],
+      "voice_id": 1,
+      "locations": [
+        "slagerij_marktplein",
+        "markt_centrum",
+        "cafe_de_hoek",
+        "sporthal_centrum"
+      ],
+      "relationships": {
+        "emma_jansen": {
+          "type": "old_flame",
+          "status": "unresolved",
+          "intensity": "high",
+          "description": "Still cares deeply but too stubborn to admit it"
+        },
+        "femke_janssen": {
+          "type": "friend",
+          "status": "shopping_neighbors",
+          "intensity": "medium",
+          "description": "Shops next to her bakery, friendly rivalry"
+        },
+        "thomas_koster": {
+          "type": "customer",
+          "status": "casual",
+          "intensity": "low",
+          "description": "Regular customer, brief conversations"
+        }
+      },
+      "backstory": "Family butcher shop. Dated Emma 20 years ago but his pride ruined it. Never married, still carries a torch. Appears grumpy but does secret kindnesses. Coaches youth soccer.",
+      "secrets": [
+        "Still in love with Emma after all these years",
+        "Leaves anonymous generous tips for struggling families",
+        "Cries watching romantic movies alone at home"
+      ],
+      "drama_potential": [
+        "Finally reconciling with Emma",
+        "Pride preventing happiness again",
+        "Health scare making him realize he's wasted time"
+      ],
+      "vocabulary_specialty": ["meat", "food", "sports", "gruff_affection"]
+    },
+    {
+      "id": "nina_meijer",
+      "name": "Nina Meijer",
+      "age": 26,
+      "gender": "F",
+      "occupation": "Pharmacy Assistant & Student",
+      "personality": ["overworked", "idealistic", "stressed", "compassionate"],
+      "voice_id": 0,
+      "locations": [
+        "apotheek_kerkstraat",
+        "bibliotheek_wijk",
+        "cafe_de_hoek",
+        "supermarkt_ah"
+      ],
+      "relationships": {
+        "sophie_vermeer": {
+          "type": "colleague",
+          "status": "admiring",
+          "intensity": "medium",
+          "description": "Looks up to Sophie, confides in her about stress"
+        },
+        "anna_de_wit": {
+          "type": "patron",
+          "status": "friendly",
+          "intensity": "low",
+          "description": "Studies at library, Anna makes sure she has quiet space"
+        },
+        "marieke_koster": {
+          "type": "customer",
+          "status": "professional",
+          "intensity": "low",
+          "description": "Fills her prescriptions, notices her stress"
+        }
+      },
+      "backstory": "Working full-time while finishing pharmacy degree. Student loans weighing heavily. Wants to help people but burning out. Family pressure to succeed. Questions if this is the right path.",
+      "secrets": [
+        "Considering dropping out despite being so close to finishing",
+        "Made a medication error that nobody caught",
+        "Developing anxiety disorder from the stress"
+      ],
+      "drama_potential": [
+        "Medication error discovered",
+        "Breaking point leading to collapse",
+        "Sophie helping her find balance"
+      ],
+      "vocabulary_specialty": ["medicine", "pharmacy", "stress", "studying"]
+    },
+    {
+      "id": "david_klein",
+      "name": "David Klein",
+      "age": 33,
+      "gender": "M",
+      "occupation": "Bookstore Owner",
+      "personality": ["intellectual", "shy", "romantic", "lonely"],
+      "voice_id": 1,
+      "locations": [
+        "boekhandel_voorstraat",
+        "bibliotheek_wijk",
+        "cafe_de_hoek",
+        "park_bloemenbuurt"
+      ],
+      "relationships": {
+        "lisa_chen": {
+          "type": "potential_romance",
+          "status": "developing",
+          "intensity": "medium",
+          "description": "Both lonely creatives, attraction growing"
+        },
+        "pieter_de_vries": {
+          "type": "friend",
+          "status": "book_lovers",
+          "intensity": "medium",
+          "description": "Bond over sci-fi, play chess together"
+        },
+        "anna_de_wit": {
+          "type": "colleague",
+          "status": "professional",
+          "intensity": "low",
+          "description": "Collaborate on literary events"
+        },
+        "willem_de_jong": {
+          "type": "mentor",
+          "status": "respectful",
+          "intensity": "low",
+          "description": "Willem gives him business and life advice"
+        }
+      },
+      "backstory": "Inherited struggling bookstore from uncle. Loves books more than profit. Introverted, struggles with loneliness. Wants connection but doesn't know how to reach out. Perfect for Lisa but both too shy.",
+      "secrets": [
+        "Bookstore losing money, might close soon",
+        "Writes poetry late at night that he never shares",
+        "Deeply attracted to Lisa but paralyzed by shyness"
+      ],
+      "drama_potential": [
+        "Romance with Lisa giving him confidence",
+        "Bookstore closure forcing difficult choice",
+        "Coming out of his shell through neighborhood involvement"
+      ],
+      "vocabulary_specialty": ["books", "literature", "shy_speech", "intellectual_topics"]
+    },
+    {
+      "id": "anouk_peters",
+      "name": "Anouk Peters",
+      "age": 39,
+      "gender": "F",
+      "occupation": "Fitness Instructor",
+      "personality": ["energetic", "positive", "health-focused", "pushy"],
+      "voice_id": 0,
+      "locations": [
+        "sporthal_centrum",
+        "zwembad_wijk",
+        "park_bloemenbuurt",
+        "supermarkt_ah"
+      ],
+      "relationships": {
+        "marieke_koster": {
+          "type": "friend",
+          "status": "supportive",
+          "intensity": "medium",
+          "description": "Encourages Marieke to prioritize self-care"
+        },
+        "lars_van_dijk": {
+          "type": "friend",
+          "status": "workout_buddies",
+          "intensity": "medium",
+          "description": "Exercise together, she gives him life advice"
+        },
+        "rob_visser": {
+          "type": "acquaintance",
+          "status": "professional",
+          "intensity": "low",
+          "description": "He coaches soccer, she teaches fitness at same complex"
+        }
+      },
+      "backstory": "Former competitive athlete. Passionate about health and wellness. Sometimes too intense about it. Single by choice. Genuinely wants to help but can be preachy. Runs bootcamps in the park.",
+      "secrets": [
+        "Struggled with eating disorder in her athletic career",
+        "Sometimes lonely despite appearing so confident",
+        "Pushes health so hard because she's terrified of aging"
+      ],
+      "drama_potential": [
+        "Her intensity pushing friends away",
+        "Past eating disorder triggered by stress",
+        "Learning to accept people as they are"
+      ],
+      "vocabulary_specialty": ["sports", "health", "exercise", "motivation"]
+    },
+    {
+      "id": "willem_de_jong",
+      "name": "Willem de Jong",
+      "age": 71,
+      "gender": "M",
+      "occupation": "Retired Teacher",
+      "personality": ["wise", "gentle", "melancholic", "kind"],
+      "voice_id": 1,
+      "locations": [
+        "bibliotheek_wijk",
+        "park_bloemenbuurt",
+        "cafe_de_hoek",
+        "museum_speelklok",
+        "woonstraat_laan"
+      ],
+      "relationships": {
+        "hendrik_smit": {
+          "type": "friend",
+          "status": "chess_partners",
+          "intensity": "medium",
+          "description": "Weekly chess games, discuss philosophy and life"
+        },
+        "anna_de_wit": {
+          "type": "friend",
+          "status": "quiet_understanding",
+          "intensity": "medium",
+          "description": "Both appreciate solitude, comfortable silence together"
+        },
+        "david_klein": {
+          "type": "mentee",
+          "status": "supportive",
+          "intensity": "low",
+          "description": "Encourages David's bookstore dreams"
+        },
+        "sanne_bakker": {
+          "type": "former_colleague",
+          "status": "friendly",
+          "intensity": "low",
+          "description": "He taught before her, gives teaching advice"
+        }
+      },
+      "backstory": "Widower for five years, misses his wife terribly. Was beloved history teacher for 40 years. Now spends days reading, walking, remembering. Community grandfather figure. Wise counsel to those who seek it.",
+      "secrets": [
+        "Struggling with grief more than he shows",
+        "Has all his wife's things exactly as she left them",
+        "Sometimes talks to her photo late at night"
+      ],
+      "drama_potential": [
+        "Finally ready to pack away wife's belongings",
+        "Becoming surrogate grandfather to someone who needs it",
+        "Health concerns he's keeping from everyone"
+      ],
+      "vocabulary_specialty": ["history", "education", "reflection", "wisdom"]
+    }
+  ],
+  "relationship_summary": {
+    "romantic_triangles": [
+      "Sanne → Pieter (oblivious)",
+      "Lars → Sophie (resisting)",
+      "Emma ↔ Rob (unresolved past)",
+      "Lisa ↔ David (mutual but shy)"
+    ],
+    "family_drama": [
+      "Marieke ↔ Thomas (strained marriage)",
+      "Marieke ↔ Julia (mother-daughter conflict)",
+      "Julia → Lars (inappropriate crush)"
+    ],
+    "friendships": [
+      "Sanne ↔ Emma (best friends)",
+      "Emma ↔ Femke (close friends)",
+      "Pieter ↔ David (book buddies)",
+      "Lars ↔ Anouk (workout friends)",
+      "Hendrik ↔ Willem (chess partners)",
+      "Anna ↔ Willem (quiet companionship)"
+    ],
+    "secrets_and_mysteries": [
+      "Jeroen's bicycle theft ring (known by Hendrik, photographed by Lisa)",
+      "Anna's hidden past (known only by Hendrik)",
+      "Julia's inappropriate crush (unknown to parents)",
+      "Rob's continuing love for Emma (secret from her)",
+      "Nina's medication error (unknown to all)"
+    ],
+    "mentorships": [
+      "Femke → Sanne (life advice)",
+      "Sophie → Nina (professional support)",
+      "Willem → David (business wisdom)",
+      "Anouk → Marieke (wellness coaching)"
+    ]
+  }
+}

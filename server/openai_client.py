@@ -3,6 +3,7 @@
 import hashlib
 import json
 import os
+import random
 from pathlib import Path
 from typing import Dict, List
 
@@ -12,22 +13,59 @@ from openai import OpenAI
 class OpenAIClient:
     """Handles OpenAI API calls for script generation and TTS."""
 
-    def __init__(self, api_key: str, audio_cache_dir: str = "generated/audio"):
+    def __init__(self, api_key: str, audio_cache_dir: str = "generated/audio", characters_data: List[Dict] = None):
         """Initialize OpenAI client.
 
         Args:
             api_key: OpenAI API key
             audio_cache_dir: Directory to cache generated audio files
+            characters_data: List of character objects from characters.json
         """
         self.client = OpenAI(api_key=api_key)
         self.audio_cache_dir = Path(audio_cache_dir)
         self.audio_cache_dir.mkdir(parents=True, exist_ok=True)
+        self.characters = characters_data or []
 
         # Voice mapping
         self.voice_map = {
             0: "alloy",   # Female-sounding
             1: "echo",    # Male-sounding
         }
+
+    def _select_characters_for_location(self, location_id: str, count: int = 2) -> List[Dict]:
+        """Select appropriate characters for a given location.
+
+        Args:
+            location_id: Location ID to find characters for
+            count: Number of characters to select (default: 2)
+
+        Returns:
+            List of character dicts with id, name, personality, voice_id
+        """
+        # Find characters that are associated with this location
+        location_characters = [
+            char for char in self.characters
+            if location_id in char.get("locations", [])
+        ]
+
+        # If we don't have enough characters for this location, use any characters
+        if len(location_characters) < count:
+            location_characters = self.characters.copy()
+
+        # Randomly select the requested number of characters
+        selected = random.sample(location_characters, min(count, len(location_characters)))
+
+        # Return simplified character objects for script generation
+        return [
+            {
+                "id": char["id"],
+                "name": char["name"],
+                "personality": char.get("personality", []),
+                "voice_id": char.get("voice_id", 0),
+                "occupation": char.get("occupation", "")
+            }
+            for char in selected
+        ]
 
     def generate_script(self, location: Dict) -> Dict:
         """Generate A1 Dutch dialogue script for a location.
@@ -41,18 +79,33 @@ class OpenAIClient:
         Raises:
             Exception: If generation fails
         """
+        # Select appropriate characters for this location
+        selected_characters = self._select_characters_for_location(location["id"])
+
+        # Build character descriptions for the prompt
+        char_descriptions = []
+        for char in selected_characters:
+            personality_str = ", ".join(char["personality"])
+            char_descriptions.append(
+                f"{char['name']} ({char['occupation']}) - personality: {personality_str}"
+            )
+
         prompt = f"""You are a Dutch language teacher creating A1 level dialogues.
 
 Location: {location['name']} ({location['type']})
 Context: {location['description']}
 
-Generate a natural 15-30 second dialogue between two people at this location, plus 7 comprehension questions.
+Characters for this dialogue:
+{chr(10).join(f"- {desc}" for desc in char_descriptions)}
+
+Generate a natural 15-30 second dialogue between these two specific characters at this location, plus 7 comprehension questions.
 
 Requirements for dialogue:
 - A1 Dutch level (CEFR A1 - beginner)
-- 2 speakers with distinct Dutch names
+- Use EXACTLY these 2 character names: {selected_characters[0]['name']} and {selected_characters[1]['name']}
+- Make the dialogue reflect their personalities and occupations
 - 4-8 lines total
-- Common everyday situations
+- Common everyday situations appropriate for this location
 - Simple present tense, basic vocabulary
 - Natural but slow-paced conversation
 - Include English translation for each dialogue line
@@ -68,14 +121,14 @@ Requirements for questions:
 Return ONLY valid JSON:
 {{
   "situation": "brief scenario description",
-  "characters": ["Name1", "Name2"],
+  "characters": ["{selected_characters[0]['name']}", "{selected_characters[1]['name']}"],
   "dialogue": [
-    {{"speaker": "Name1", "text": "Dutch text here", "translation": "English translation here"}},
-    {{"speaker": "Name2", "text": "Dutch text here", "translation": "English translation here"}}
+    {{"speaker": "{selected_characters[0]['name']}", "text": "Dutch text here", "translation": "English translation here"}},
+    {{"speaker": "{selected_characters[1]['name']}", "text": "Dutch text here", "translation": "English translation here"}}
   ],
   "questions": [
     {{
-      "question": "What did Name1 ask for?",
+      "question": "What did {selected_characters[0]['name']} ask for?",
       "options": ["Option A", "Option B", "Option C", "Option D"],
       "correct_answer": 0
     }}
@@ -92,10 +145,20 @@ Return ONLY valid JSON:
             content = response.choices[0].message.content
             script_data = json.loads(content)
 
-            # Assign voices to characters (alternating)
+            # Replace the character names array with full character objects including IDs
+            script_data["characters"] = [
+                {
+                    "id": char["id"],
+                    "name": char["name"],
+                    "voice_id": char["voice_id"]
+                }
+                for char in selected_characters
+            ]
+
+            # Build voice mapping by character name
             voice_map_char = {
-                script_data["characters"][0]: 0,
-                script_data["characters"][1]: 1
+                char["name"]: char["voice_id"]
+                for char in selected_characters
             }
 
             # Add voice_id to each dialogue line
