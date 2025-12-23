@@ -1,25 +1,5 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-.venv/
-venv/
-*.egg-info/
-
-# Environment
-.env
-
-# Generated audio
-generated/audio/*.mp3
-generated/audio/*.aiff
-generated/audio/*.wav
-
 # macOS
 .DS_Store
-
-# Test files
-test_*.py
-debug_*.py
 
 # IDE
 .vscode/

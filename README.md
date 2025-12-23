@@ -3,74 +3,41 @@
 An audio-first A1 Dutch learning game where you explore a Dutch neighborhood and listen to slice-of-life dialogues.
 
 ## Features
-- 🏘️ 15 Dutch neighborhood locations
-- 🤖 AI-generated A1-level Dutch dialogues (OpenAI gpt-5.1)
-- 🔊 Text-to-speech with distinct voices (OpenAI gpt-4o-mini-tts)
-- 📝 Comprehension quiz questions after each dialogue
-- 🎮 Interactive learning with immediate feedback
-- 💻 Browser-based (Chrome, Firefox, Safari, Edge)
 
-## Tech Stack
-- **Frontend**: Vanilla HTML/CSS/JavaScript (zero dependencies!)
-- **Backend**: Python Flask
-- **AI**: OpenAI API (gpt-5.1 + gpt-4o-mini-tts)
-- **Audio**: HTML5 Audio API
+- 15 Dutch neighborhood locations
+- AI-generated A1-level Dutch dialogues (OpenAI gpt-4.1)
+- Text-to-speech with distinct voices (OpenAI gpt-4o-mini-tts)
+- Comprehension quiz questions after each dialogue
+- Interactive learning with immediate feedback
+- Browser-based (Chrome, Firefox, Safari, Edge)
+- Zero dependencies - pure HTML/CSS/JavaScript
 
 ## Setup
 
 ### Prerequisites
-- Python 3.11+
+
 - OpenAI API key ([get one here](https://platform.openai.com/api-keys))
+- Modern web browser
 
-### Installation
+### Running the App
 
-1. **Clone the repository** (if not already done)
+1. Open `index.html` in your browser
+2. Enter your OpenAI API key when prompted
+3. Start learning Dutch!
+
+Alternatively, serve with any static file server:
+
 ```bash
-cd taalquest_neighborhood
+python -m http.server 8000
+# Then open http://localhost:8000
 ```
-
-2. **Set up environment variable** (optional if already in your shell)
-```bash
-# Option A: If you already have OPENAI_API_KEY in your environment (e.g., zshrc)
-# You're good to go! Skip this step.
-
-# Option B: Create .env file for project-specific key
-echo "OPENAI_API_KEY=sk-your-key-here" > .env
-```
-
-3. **Install Python dependencies**
-```bash
-uv sync
-```
-
-## Running the App
-
-### Option 1: Two-Server Setup (Recommended for Development)
-
-**Terminal 1 - Backend:**
-```bash
-uv run python server/app.py
-```
-Backend runs on: http://localhost:5000
-
-**Terminal 2 - Frontend:**
-```bash
-uv run python -m http.server 8000 -d web
-```
-Frontend runs on: http://localhost:8000
-
-**Open your browser** and visit http://localhost:8000
-
-### Option 2: Single-Server Setup
-
-You can also configure Flask to serve the static files directly (modify `server/app.py` to serve the `web/` directory).
 
 ## How to Play
 
 1. **Start the app** - A random Dutch location appears
 2. **Tap "Play"** - Listen to the A1 Dutch dialogue
 3. **Answer questions** - Test your comprehension with 3 multiple-choice questions
-4. **See your score** - Get immediate feedback and encouragement
+4. **See your score** - Get immediate feedback
 5. **Replay** - Listen to the dialogue again
 6. **Continue** - Get a new scenario at a different location
 
@@ -78,75 +45,22 @@ You can also configure Flask to serve the static files directly (modify `server/
 
 ```
 taalquest_neighborhood/
-├── web/                    # Frontend
-│   ├── index.html         # Main game page
-│   ├── styles.css         # Styling
-│   └── app.js             # Game logic
-├── server/                 # Backend
-│   ├── app.py             # Flask API
-│   ├── openai_client.py   # OpenAI integration
-│   └── requirements.txt   # Python dependencies
-├── data/
-│   └── locations.json     # 15 Dutch locations
-└── generated/
-    └── audio/             # Cached audio files (auto-generated)
+├── index.html     # Main game page
+├── styles.css     # Styling
+└── app.js         # Game logic + embedded data
 ```
 
-## API Endpoints
+## Tech Stack
 
-- `GET /api/locations` - Get all locations
-- `POST /api/generate-scenario` - Generate script + audio
-- `GET /api/audio/<filename>` - Serve audio file
-- `GET /health` - Health check
+- **Frontend**: Vanilla HTML/CSS/JavaScript (zero dependencies!)
+- **AI**: OpenAI API (gpt-4.1 + gpt-4o-mini-tts) - called directly from browser
 
 ## API Costs
 
-Approximate costs per scenario (with OpenAI API):
-- **Script generation**: Check gpt-5.1 pricing
-- **Audio generation**: Check gpt-4o-mini-tts pricing
-- **Caching**: Audio files are cached to reduce API costs
-
-## Development
-
-### Backend Testing
-```bash
-# Test OpenAI connection
-uv run python -c "from server.openai_client import OpenAIClient; import os; from dotenv import load_dotenv; load_dotenv('.env'); client = OpenAIClient(os.getenv('OPENAI_API_KEY')); print('OpenAI client initialized successfully')"
-```
-
-### Frontend Testing
-Open `web/index.html` directly in browser, or use any static file server.
-
-## Troubleshooting
-
-### "Failed to fetch locations"
-- Ensure backend is running on http://localhost:5000
-- Check CORS is enabled in Flask
-
-### "OpenAI API Error"
-- Verify `.env` file contains valid `OPENAI_API_KEY`
-- Check OpenAI API quota/billing
-
-### "Audio playback failed"
-- Check browser console for errors
-- Verify audio files are generated in `generated/audio/`
-- Try a different browser (Chrome/Firefox recommended)
+Approximate costs per scenario:
+- **Script generation**: ~$0.01 (gpt-4.1)
+- **Audio generation**: ~$0.02 (gpt-4o-mini-tts)
 
 ## License
 
 Educational project for Dutch language learning.
-
-## Features Implemented
-
-- ✅ Comprehension quiz questions
-- ✅ Immediate feedback on answers
-- ✅ Score tracking
-
-## Future Enhancements
-
-- [ ] Progress tracking across sessions
-- [ ] Multiple difficulty levels (A1, A2, B1)
-- [ ] Voice selection UI
-- [ ] Leaderboard and stats
-- [ ] PWA for mobile use
-- [ ] Cloud deployment
