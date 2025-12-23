@@ -19,7 +19,7 @@ export const API = {
 
 export const MODELS = {
     CHAT: 'gpt-4.1-mini'
-  , TTS: 'tts-1'
+  , TTS: 'gpt-4o-mini-tts'
   , IMAGE: 'dall-e-3'  // Use gpt-image-1-mini once org is verified
 };
 
@@ -57,7 +57,7 @@ export const API_KEY_PREFIX = 'sk-';
 
 export const AUDIO = {
     PAUSE_BETWEEN_LINES_MS: 500
-  , TTS_SPEED: 0.90
+  , TTS_SPEED: 1.0
 };
 
 // Voice mapping for TTS (OpenAI voices)
