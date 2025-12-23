@@ -4,31 +4,18 @@
  */
 
 import { generateScenario, generateScript } from './api.js';
-
-// ============================================================================
-// CONFIGURATION
-// ============================================================================
-
-const STORAGE_KEY = 'taalquest_api_key';
-const PAUSE_BETWEEN_AUDIO_MS = 500;
-
-// Embedded character data (simplified from original characters.json)
-const CHARACTERS = [
-    { name: 'Sanne', gender: 'F', voice_id: 0 },
-    { name: 'Pieter', gender: 'M', voice_id: 1 },
-    { name: 'Emma', gender: 'F', voice_id: 0 },
-    { name: 'Lars', gender: 'M', voice_id: 1 },
-    { name: 'Sophie', gender: 'F', voice_id: 0 },
-    { name: 'Hendrik', gender: 'M', voice_id: 1 },
-    { name: 'Anna', gender: 'F', voice_id: 0 },
-    { name: 'David', gender: 'M', voice_id: 1 }
-];
-
-// Voice mapping for TTS
-const VOICE_MAP = {
-    0: 'alloy',  // Female-sounding
-    1: 'echo'    // Male-sounding
-};
+import {
+    API
+  , MODELS
+  , RESPONSE_FORMATS
+  , STORAGE_KEYS
+  , API_KEY_PREFIX
+  , AUDIO
+  , VOICE_MAP
+  , CHARACTERS
+  , UI_STATES
+  , QUIZ
+} from './constants.js';
 
 // ============================================================================
 // APPLICATION STATE
@@ -65,23 +52,23 @@ const audio = new Audio();
 // ============================================================================
 
 function loadApiKey() {
-    state.apiKey = localStorage.getItem(STORAGE_KEY);
+    state.apiKey = localStorage.getItem(STORAGE_KEYS.API_KEY);
     return state.apiKey;
 }
 
 function saveApiKey(key) {
-    localStorage.setItem(STORAGE_KEY, key);
+    localStorage.setItem(STORAGE_KEYS.API_KEY, key);
     state.apiKey = key;
 }
 
 function clearApiKey() {
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(STORAGE_KEYS.API_KEY);
     state.apiKey = null;
 }
 
 async function validateApiKey(key) {
     try {
-        const response = await fetch('https://api.openai.com/v1/models', {
+        const response = await fetch(`${API.BASE_URL}${API.ENDPOINTS.MODELS}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${key}`
@@ -101,17 +88,17 @@ async function validateApiKey(key) {
 async function generateAudio(text, voiceId) {
     const voice = VOICE_MAP[voiceId] || VOICE_MAP[0];
 
-    const response = await fetch('https://api.openai.com/v1/audio/speech', {
+    const response = await fetch(`${API.BASE_URL}${API.ENDPOINTS.AUDIO_SPEECH}`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${state.apiKey}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            model: 'tts-1',
+            model: MODELS.TTS,
             voice: voice,
             input: text,
-            response_format: 'mp3'
+            response_format: RESPONSE_FORMATS.MP3
         })
     });
 
@@ -145,7 +132,7 @@ function selectRandomCharacters() {
 
 async function generateNewScenario() {
     console.log('Generating new scenario...');
-    setUIState('loading');
+    setUIState(UI_STATES.LOADING);
 
     // Clear previous audio blob URLs to prevent memory leaks
     clearAudioUrls();
@@ -190,13 +177,13 @@ async function generateNewScenario() {
 
         // Update UI
         elements.scenarioSituation.textContent = script.situation || '';
-        setUIState('ready');
+        setUIState(UI_STATES.READY);
 
         console.log('Scenario ready');
 
     } catch (error) {
         console.error('Error generating scenario:', error);
-        setUIState('error', error.message || 'Failed to generate scenario');
+        setUIState(UI_STATES.ERROR, error.message || 'Failed to generate scenario');
     }
 }
 
@@ -225,7 +212,7 @@ function handlePlay() {
     state.isPlaying = true;
     state.currentAudioIndex = 0;
     elements.currentSpeaker.style.display = 'none';
-    setUIState('playing');
+    setUIState(UI_STATES.PLAYING);
 
     playCurrentAudio();
 }
@@ -254,7 +241,7 @@ function playCurrentAudio() {
     audio.src = audioUrl;
     audio.play().catch(error => {
         console.error('Audio playback failed:', error);
-        setUIState('error', 'Audio playback failed');
+        setUIState(UI_STATES.ERROR, 'Audio playback failed');
         state.isPlaying = false;
     });
 }
@@ -270,7 +257,7 @@ function handleAudioEnded() {
         // Pause before next audio
         setTimeout(() => {
             playCurrentAudio();
-        }, PAUSE_BETWEEN_AUDIO_MS);
+        }, AUDIO.PAUSE_BETWEEN_LINES_MS);
     } else {
         // Sequence complete
         state.isPlaying = false;
@@ -289,7 +276,7 @@ function handleAudioEnded() {
         if (state.quizQuestions && state.quizQuestions.length > 0 && !state.quizShown) {
             showQuiz();
         } else if (!state.quizShown) {
-            setUIState('finished');
+            setUIState(UI_STATES.FINISHED);
         }
     }
 }
@@ -297,7 +284,7 @@ function handleAudioEnded() {
 function handleAudioError(event) {
     console.error('Audio error:', event);
     state.isPlaying = false;
-    setUIState('error', 'Audio loading failed');
+    setUIState(UI_STATES.ERROR, 'Audio loading failed');
 }
 
 // ============================================================================
@@ -315,7 +302,7 @@ function setUIState(stateName, message = '') {
     elements.generateButton.classList.remove('loading');
 
     switch (stateName) {
-        case 'loading':
+        case UI_STATES.LOADING:
             elements.generateButton.style.display = 'flex';
             elements.playButton.style.display = 'none';
             elements.controls.style.display = 'none';
@@ -327,7 +314,7 @@ function setUIState(stateName, message = '') {
             elements.quizSection.style.display = 'none';
             break;
 
-        case 'ready':
+        case UI_STATES.READY:
             elements.generateButton.style.display = 'none';
             elements.playButton.style.display = 'flex';
             elements.playButton.disabled = false;
@@ -336,12 +323,12 @@ function setUIState(stateName, message = '') {
             elements.controls.style.display = 'none';
             break;
 
-        case 'playing':
+        case UI_STATES.PLAYING:
             elements.playButton.innerHTML = '<span class="button-icon">&#9654;</span><span class="button-text">Playing...</span>';
             elements.statusMessage.textContent = 'Listen to the dialogue...';
             break;
 
-        case 'finished':
+        case UI_STATES.FINISHED:
             elements.playButton.style.display = 'none';
             elements.controls.style.display = 'flex';
             elements.replayButton.disabled = false;
@@ -349,7 +336,7 @@ function setUIState(stateName, message = '') {
             elements.statusMessage.textContent = '';
             break;
 
-        case 'error':
+        case UI_STATES.ERROR:
             elements.generateButton.style.display = 'flex';
             elements.playButton.style.display = 'none';
             elements.generateButton.innerHTML = '<span class="button-icon">&#8635;</span><span class="button-text">Try Again</span>';
@@ -357,7 +344,7 @@ function setUIState(stateName, message = '') {
             elements.statusMessage.innerHTML = `<div class="error-message">${message}</div>`;
             break;
 
-        case 'initial':
+        case UI_STATES.INITIAL:
             elements.generateButton.style.display = 'flex';
             elements.playButton.style.display = 'none';
             elements.controls.style.display = 'none';
@@ -474,18 +461,18 @@ function showQuizResults() {
 
     elements.quizScoreDisplay.textContent = `${state.quizScore} / ${state.quizQuestions.length}`;
 
-    if (percentage === 100) {
+    if (percentage === QUIZ.SCORE_THRESHOLDS.PERFECT) {
         elements.quizMessage.textContent = 'Perfect! Uitstekend!';
-    } else if (percentage >= 75) {
+    } else if (percentage >= QUIZ.SCORE_THRESHOLDS.GREAT) {
         elements.quizMessage.textContent = 'Great job! Goed gedaan!';
-    } else if (percentage >= 50) {
+    } else if (percentage >= QUIZ.SCORE_THRESHOLDS.PASSING) {
         elements.quizMessage.textContent = 'Not bad! Keep practicing!';
     } else {
         elements.quizMessage.textContent = 'Keep trying! Blijf oefenen!';
     }
 
     // Show controls
-    setUIState('finished');
+    setUIState(UI_STATES.FINISHED);
 }
 
 // ============================================================================
@@ -603,8 +590,8 @@ async function handleSaveApiKey() {
         return;
     }
 
-    if (!key.startsWith('sk-')) {
-        elements.apiKeyError.textContent = 'Invalid API key format. It should start with "sk-"';
+    if (!key.startsWith(API_KEY_PREFIX)) {
+        elements.apiKeyError.textContent = `Invalid API key format. It should start with "${API_KEY_PREFIX}"`;
         elements.apiKeyError.style.display = 'block';
         return;
     }
@@ -618,7 +605,7 @@ async function handleSaveApiKey() {
     if (isValid) {
         saveApiKey(key);
         hideApiKeyModal();
-        setUIState('initial');
+        setUIState(UI_STATES.INITIAL);
     } else {
         elements.apiKeyError.textContent = 'Invalid API key. Please check and try again.';
         elements.apiKeyError.style.display = 'block';
@@ -736,7 +723,7 @@ function init() {
     // Check for existing API key
     if (loadApiKey()) {
         hideApiKeyModal();
-        setUIState('initial');
+        setUIState(UI_STATES.INITIAL);
     } else {
         showApiKeyModal();
     }

@@ -3,6 +3,8 @@
  * Shared module for scenario and script generation
  */
 
+import { API, MODELS, RESPONSE_FORMATS, TEMPERATURE } from './constants.js';
+
 /**
  * Generate a rich, realistic scenario for a Dutch conversation.
  * Uses two API calls: one for creative generation, one for JSON formatting.
@@ -36,16 +38,16 @@ Write a vivid paragraph (4-6 sentences) describing:
 
 Be creative and specific. Avoid generic "ordering coffee" scenarios. Make it feel like a real slice of Dutch life with texture and personality.`;
 
-    const creativeResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+    const creativeResponse = await fetch(`${API.BASE_URL}${API.ENDPOINTS.CHAT_COMPLETIONS}`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${apiKey}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            model: 'gpt-4.1-mini',
+            model: MODELS.CHAT,
             messages: [{ role: 'user', content: creativePrompt }],
-            temperature: 1.0
+            temperature: TEMPERATURE.CREATIVE
         })
     });
 
@@ -72,17 +74,17 @@ Return this exact JSON structure:
   "character2_role": "brief role description for ${char2Name}"
 }`;
 
-    const structureResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+    const structureResponse = await fetch(`${API.BASE_URL}${API.ENDPOINTS.CHAT_COMPLETIONS}`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${apiKey}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            model: 'gpt-4.1-mini',
+            model: MODELS.CHAT,
             messages: [{ role: 'user', content: structurePrompt }],
-            response_format: { type: 'json_object' },
-            temperature: 0.0
+            response_format: RESPONSE_FORMATS.JSON,
+            temperature: TEMPERATURE.DETERMINISTIC
         })
     });
 
@@ -130,17 +132,17 @@ Return JSON:
   "situation_summary": "1 sentence description for the learner"
 }`;
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch(`${API.BASE_URL}${API.ENDPOINTS.CHAT_COMPLETIONS}`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${apiKey}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            model: 'gpt-4.1-mini',
+            model: MODELS.CHAT,
             messages: [{ role: 'user', content: outlinePrompt }],
-            response_format: { type: 'json_object' },
-            temperature: 0.7
+            response_format: RESPONSE_FORMATS.JSON,
+            temperature: TEMPERATURE.BALANCED
         })
     });
 
@@ -203,17 +205,17 @@ Return JSON:
   ]
 }`;
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch(`${API.BASE_URL}${API.ENDPOINTS.CHAT_COMPLETIONS}`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${apiKey}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            model: 'gpt-4.1-mini',
+            model: MODELS.CHAT,
             messages: [{ role: 'user', content: dialoguePrompt }],
-            response_format: { type: 'json_object' },
-            temperature: 0.5
+            response_format: RESPONSE_FORMATS.JSON,
+            temperature: TEMPERATURE.FOCUSED
         })
     });
 
