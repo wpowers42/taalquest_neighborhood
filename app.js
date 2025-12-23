@@ -48,6 +48,7 @@ const state = {
     quizScore: 0,
     quizAnswered: false,
     quizShown: false,
+    shuffledCorrectIndex: 0,
 
     // Cache state
     isBackgroundGenerating: false
@@ -581,6 +582,15 @@ function showQuiz() {
     displayCurrentQuestion();
 }
 
+function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+
 function displayCurrentQuestion() {
     const question = state.quizQuestions[state.currentQuestionIndex];
     state.quizAnswered = false;
@@ -594,13 +604,21 @@ function displayCurrentQuestion() {
     // Clear previous options
     elements.quizOptions.innerHTML = '';
 
-    // Display options
-    question.options.forEach((option, index) => {
+    // Create shuffled indices to randomize option order
+    const indices = question.options.map((_, i) => i);
+    const shuffledIndices = shuffleArray(indices);
+
+    // Store the shuffled position of the correct answer
+    state.shuffledCorrectIndex = shuffledIndices.indexOf(question.correct_answer);
+
+    // Display options in shuffled order
+    shuffledIndices.forEach((originalIndex, displayIndex) => {
         const optionDiv = document.createElement('div');
         optionDiv.className = 'quiz-option';
-        optionDiv.textContent = option;
-        optionDiv.dataset.index = index;
-        optionDiv.addEventListener('click', () => handleAnswerSelection(index));
+        optionDiv.textContent = question.options[originalIndex];
+        optionDiv.dataset.index = displayIndex;
+        optionDiv.dataset.originalIndex = originalIndex;
+        optionDiv.addEventListener('click', () => handleAnswerSelection(displayIndex));
         elements.quizOptions.appendChild(optionDiv);
     });
 
@@ -614,7 +632,7 @@ function handleAnswerSelection(selectedIndex) {
 
     state.quizAnswered = true;
     const question = state.quizQuestions[state.currentQuestionIndex];
-    const isCorrect = selectedIndex === question.correct_answer;
+    const isCorrect = selectedIndex === state.shuffledCorrectIndex;
 
     if (isCorrect) {
         state.quizScore++;
@@ -624,7 +642,7 @@ function handleAnswerSelection(selectedIndex) {
     const options = elements.quizOptions.querySelectorAll('.quiz-option');
     options.forEach((option, index) => {
         option.classList.add('disabled');
-        if (index === question.correct_answer) {
+        if (index === state.shuffledCorrectIndex) {
             option.classList.add('correct');
         } else if (index === selectedIndex && !isCorrect) {
             option.classList.add('incorrect');
