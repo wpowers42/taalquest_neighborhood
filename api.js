@@ -129,7 +129,7 @@ Return JSON:
   "followup_intent": "how ${char1Name} continues on the SAME topic",
   "continuation_intent": "how ${char2Name} builds on that",
   "closing_intent": "how they wrap up (goodbye, thanks, see you later, etc.)",
-  "situation_summary": "1 sentence description for the learner"
+  "situation_summary": "1 sentence description for the learner (in English)"
 }`;
 
     const response = await fetch(`${API.BASE_URL}${API.ENDPOINTS.CHAT_COMPLETIONS}`, {
