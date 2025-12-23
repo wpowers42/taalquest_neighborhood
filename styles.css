@@ -7,14 +7,14 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background-color: #f5f5f5;
-    color: #333;
-    line-height: 1.6;
+    background-color: #faf9f7;
+    color: #3d3d3d;
+    line-height: 1.7;
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    padding: 20px;
+    padding: 24px;
 }
 
 /* Modal styles */
@@ -69,7 +69,7 @@ body {
 .api-key-input-group input {
     width: 100%;
     padding: 14px 16px;
-    border: 2px solid #e0e0e0;
+    border: 2px solid #e8e4e0;
     border-radius: 8px;
     font-size: 16px;
     font-family: monospace;
@@ -111,19 +111,20 @@ body {
 
 /* Game container */
 .game-container {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
+    background: #fffffe;
+    border-radius: 20px;
+    box-shadow: 0 4px 24px rgba(139, 119, 101, 0.1);
+    max-width: 1100px;
     width: 100%;
-    padding: 30px;
+    padding: 32px;
+    margin-top: 20px;
 }
 
 /* Header */
 header {
     text-align: center;
     margin-bottom: 30px;
-    border-bottom: 2px solid #f0f0f0;
+    border-bottom: 2px solid #f0ede8;
     padding-bottom: 20px;
     position: relative;
 }
@@ -168,6 +169,28 @@ header h1 {
     gap: 24px;
 }
 
+/* Two-panel layout */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.left-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: #faf9f7;
+    border-radius: 16px;
+    padding: 24px;
+    border: 2px solid #e8e4e0;
+}
+
 /* Scenario display */
 #scenario-display {
     text-align: center;
@@ -206,8 +229,12 @@ header h1 {
 }
 
 .scenario-icon {
-    font-size: 48px;
-    margin-bottom: 12px;
+    font-size: 64px;
+    margin-bottom: 16px;
+    padding: 32px;
+    background: linear-gradient(135deg, #f8f6f3 0%, #ede9e4 100%);
+    border-radius: 16px;
+    display: inline-block;
 }
 
 #scenario-title {
@@ -230,6 +257,11 @@ header h1 {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    align-items: center;
+}
+
+#status-area .primary-button {
+    max-width: 320px;
 }
 
 /* Current speaker display */
@@ -301,14 +333,14 @@ button:disabled {
 }
 
 .secondary-button {
-    background-color: white;
-    color: #333;
-    border: 2px solid #e0e0e0;
+    background-color: #fffffe;
+    color: #3d3d3d;
+    border: 2px solid #e8e4e0;
     flex: 1;
 }
 
 .secondary-button:not(:disabled):hover {
-    background-color: #f5f5f5;
+    background-color: #faf9f7;
     border-color: #2196F3;
     color: #2196F3;
 }
@@ -342,7 +374,7 @@ button:disabled {
 footer {
     margin-top: 30px;
     padding-top: 20px;
-    border-top: 2px solid #f0f0f0;
+    border-top: 2px solid #f0ede8;
     text-align: center;
 }
 
@@ -417,10 +449,10 @@ footer {
 
 /* Transcript boxes */
 .transcript-box {
-    background-color: #f8f9fa;
+    background-color: #fffffe;
     border-radius: 12px;
     padding: 20px;
-    border: 2px solid #e0e0e0;
+    border: 1px solid #e8e4e0;
 }
 
 .transcript-header {
@@ -445,7 +477,7 @@ footer {
     gap: 16px;
     margin-bottom: 16px;
     padding-bottom: 12px;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e8e4e0;
 }
 
 .transcript-box .transcript-line:last-child {
@@ -474,7 +506,7 @@ footer {
 
 .transcript-box .dutch-side {
     padding-right: 8px;
-    border-right: 2px solid #e0e0e0;
+    border-right: 2px solid #e8e4e0;
 }
 
 .transcript-box .english-side {
@@ -483,9 +515,10 @@ footer {
 
 /* Quiz section */
 #quiz-section {
-    background-color: #f8f9fa;
+    background-color: #fffffe;
     border-radius: 12px;
     padding: 24px;
+    border: 1px solid #e8e4e0;
 }
 
 .quiz-header {
@@ -520,8 +553,8 @@ footer {
 }
 
 .quiz-option {
-    background: white;
-    border: 2px solid #e0e0e0;
+    background: #fffffe;
+    border: 2px solid #e8e4e0;
     border-radius: 8px;
     padding: 16px;
     cursor: pointer;
@@ -532,7 +565,7 @@ footer {
 
 .quiz-option:hover {
     border-color: #2196F3;
-    background-color: #f5f5f5;
+    background-color: #faf9f7;
 }
 
 .quiz-option.selected {
@@ -592,10 +625,96 @@ footer {
     margin-bottom: 20px;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
+/* Responsive - Desktop */
+@media (min-width: 900px) {
+    body {
+        align-items: center;
+        padding: 40px;
+    }
+
+    .game-container {
+        padding: 40px;
+    }
+
+    .main-content {
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        gap: 40px;
+        align-items: start;
+    }
+
+    .left-panel {
+        position: sticky;
+        top: 40px;
+    }
+
+    #scenario-display {
+        text-align: left;
+    }
+
+    .scenario-icon {
+        font-size: 72px;
+        margin-bottom: 20px;
+        padding: 40px;
+    }
+
+    #scenario-title {
+        font-size: 22px;
+    }
+
+    .right-panel {
+        gap: 24px;
+    }
+
+    #controls {
+        justify-content: flex-start;
+    }
+
+    .secondary-button {
+        flex: 0 0 auto;
+        min-width: 160px;
+    }
+}
+
+/* Responsive - Tablet */
+@media (min-width: 600px) and (max-width: 899px) {
+    .game-container {
+        max-width: 700px;
+        padding: 32px;
+    }
+
+    #scenario-display {
+        text-align: center;
+    }
+
+    .right-panel {
+        background: transparent;
+        border: none;
+        padding: 0;
+    }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 599px) {
+    body {
+        padding: 16px;
+    }
+
     .game-container {
         padding: 20px;
+        max-width: 500px;
+        border-radius: 16px;
+    }
+
+    .right-panel {
+        background: transparent;
+        border: none;
+        padding: 0;
+    }
+
+    .scenario-icon {
+        font-size: 48px;
+        padding: 24px;
     }
 
     header h1 {
@@ -654,7 +773,7 @@ footer {
         padding-right: 0;
         padding-bottom: 8px;
         border-right: none;
-        border-bottom: 1px solid #e0e0e0;
+        border-bottom: 1px solid #e8e4e0;
     }
 
     .transcript-box .english-side {
