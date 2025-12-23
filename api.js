@@ -3,7 +3,7 @@
  * Shared module for scenario and script generation
  */
 
-import { API, MODELS, RESPONSE_FORMATS, TEMPERATURE } from './constants.js';
+import { API, MODELS, RESPONSE_FORMATS, TEMPERATURE, IMAGE_CONFIG } from './constants.js';
 
 /**
  * Generate a rich, realistic scenario for a Dutch conversation.
@@ -245,4 +245,49 @@ export async function generateScript(apiKey, char1, char2, scenarioDescription) 
     const script = await generateDialogueFromOutline(apiKey, char1, char2, outline);
 
     return script;
+}
+
+/**
+ * Generate a scene illustration for the scenario.
+ * Returns a blob URL for the generated image.
+ */
+export async function generateSceneImage(apiKey, settingType, mood, scenarioDescription) {
+    // Build a prompt optimized for Ghibli-style Utrecht scenes
+    const prompt = `Studio Ghibli-inspired illustration, warm watercolor comic panel style, no text or speech bubbles.
+
+Scene: ${scenarioDescription}
+
+Setting: ${settingType} in Utrecht, Netherlands. Dutch architectural details visible - brick row houses, bicycles, canal glimpses, cobblestone streets, Dom Tower in the distance.
+
+Atmosphere: ${mood}, soft natural light.
+
+Style: Hand-painted warmth, gentle linework, muted earthy palette with pops of orange and blue (Dutch colors), cozy and inviting like a Ghibli background painting. Wordless storytelling through body language and expressions. Two characters in mid-conversation.`;
+
+    const response = await fetch(`${API.BASE_URL}${API.ENDPOINTS.IMAGES_GENERATIONS}`, {
+        method: 'POST'
+      , headers: {
+            'Authorization': `Bearer ${apiKey}`
+          , 'Content-Type': 'application/json'
+        }
+      , body: JSON.stringify({
+            model: MODELS.IMAGE
+          , prompt: prompt
+          , n: 1
+          , size: IMAGE_CONFIG.SIZE
+          , quality: IMAGE_CONFIG.QUALITY
+        })
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error?.message || 'Image generation failed');
+    }
+
+    const data = await response.json();
+    const imageUrl = data.data[0].url;
+
+    // Fetch the image and convert to blob URL for local use
+    const imageResponse = await fetch(imageUrl);
+    const imageBlob = await imageResponse.blob();
+    return URL.createObjectURL(imageBlob);
 }

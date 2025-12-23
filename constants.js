@@ -13,12 +13,19 @@ export const API = {
         MODELS: '/models'
       , CHAT_COMPLETIONS: '/chat/completions'
       , AUDIO_SPEECH: '/audio/speech'
+      , IMAGES_GENERATIONS: '/images/generations'
     }
 };
 
 export const MODELS = {
     CHAT: 'gpt-4.1-mini'
   , TTS: 'tts-1'
+  , IMAGE: 'dall-e-3'  // Use gpt-image-1-mini once org is verified
+};
+
+export const IMAGE_CONFIG = {
+    SIZE: '1024x1024'
+  , QUALITY: 'standard'  // 'standard' ($0.04) or 'hd' ($0.08)
 };
 
 export const RESPONSE_FORMATS = {

@@ -3,7 +3,7 @@
  * Frontend-only application using OpenAI API directly
  */
 
-import { generateScenario, generateScript } from './api.js';
+import { generateScenario, generateScript, generateSceneImage } from './api.js';
 import {
     API
   , MODELS
@@ -28,6 +28,7 @@ const state = {
     // Current scenario
     currentScript: null,
     currentAudioUrls: [],  // Blob URLs for audio
+    currentSceneImageUrl: null,  // Blob URL for scene image
 
     // Playback state
     isPlaying: false,
@@ -135,8 +136,9 @@ async function generateNewScenario() {
     console.log('Generating new scenario...');
     setUIState(UI_STATES.LOADING);
 
-    // Clear previous audio blob URLs to prevent memory leaks
+    // Clear previous blob URLs to prevent memory leaks
     clearAudioUrls();
+    clearSceneImage();
 
     try {
         // Select characters
@@ -155,14 +157,35 @@ async function generateNewScenario() {
 
         state.currentScript = script;
 
-        // Generate audio for all lines in parallel
-        elements.statusMessage.textContent = `Generating audio for ${script.dialogue.length} lines...`;
+        // Generate audio and scene image in parallel
+        elements.statusMessage.textContent = 'Generating audio and scene illustration...';
 
-        const audioUrls = await Promise.all(
-            script.dialogue.map(line => generateAudio(line.text, line.voice_id))
-        );
+        const [audioUrls, sceneImageUrl] = await Promise.all([
+            // Generate audio for all dialogue lines
+            Promise.all(
+                script.dialogue.map(line => generateAudio(line.text, line.voice_id))
+            )
+            // Generate scene illustration
+          , generateSceneImage(
+                state.apiKey
+              , scenario.setting_type
+              , scenario.mood
+              , scenario.scenario_description
+            ).catch(err => {
+                console.warn('Scene image generation failed:', err);
+                return null;  // Non-fatal: continue without image
+            })
+        ]);
 
         state.currentAudioUrls = audioUrls;
+
+        // Display scene image if generated
+        if (sceneImageUrl) {
+            state.currentSceneImageUrl = sceneImageUrl;
+            elements.sceneImage.src = sceneImageUrl;
+            elements.sceneImageContainer.style.display = 'block';
+            elements.scenarioIcon.style.display = 'none';
+        }
 
         // Reset quiz state
         state.quizQuestions = script.questions || [];
@@ -192,6 +215,20 @@ function clearAudioUrls() {
         }
     });
     state.currentAudioUrls = [];
+}
+
+function clearSceneImage() {
+    if (state.currentSceneImageUrl) {
+        try {
+            URL.revokeObjectURL(state.currentSceneImageUrl);
+        } catch (e) {
+            // Ignore errors
+        }
+        state.currentSceneImageUrl = null;
+    }
+    elements.sceneImageContainer.style.display = 'none';
+    elements.sceneImage.src = '';
+    elements.scenarioIcon.style.display = 'block';
 }
 
 // ============================================================================
@@ -552,6 +589,9 @@ async function handleNewDialogue() {
     elements.currentSpeaker.style.display = 'none';
     elements.transcriptContent.innerHTML = '';
 
+    // Clear scene image
+    clearSceneImage();
+
     await generateNewScenario();
 }
 
@@ -668,6 +708,9 @@ function init() {
     elements.settingsError = document.getElementById('settings-error');
 
     elements.scenarioSituation = document.getElementById('scenario-situation');
+    elements.scenarioIcon = document.getElementById('scenario-icon');
+    elements.sceneImageContainer = document.getElementById('scene-image-container');
+    elements.sceneImage = document.getElementById('scene-image');
     elements.statusMessage = document.getElementById('status-message');
     elements.generateButton = document.getElementById('generate-button');
     elements.playButton = document.getElementById('play-button');
