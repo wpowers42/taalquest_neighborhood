@@ -71,14 +71,14 @@ export const VOICE_MAP = {
 // ============================================================================
 
 export const CHARACTERS = [
-    { name: 'Sanne', gender: 'F', voice_id: 0 }
-  , { name: 'Pieter', gender: 'M', voice_id: 1 }
-  , { name: 'Emma', gender: 'F', voice_id: 0 }
-  , { name: 'Lars', gender: 'M', voice_id: 1 }
-  , { name: 'Sophie', gender: 'F', voice_id: 0 }
-  , { name: 'Hendrik', gender: 'M', voice_id: 1 }
-  , { name: 'Anna', gender: 'F', voice_id: 0 }
-  , { name: 'David', gender: 'M', voice_id: 1 }
+    { name: 'Sanne', gender: 'F', voice_id: 0, appearance: 'young woman in her early 20s with short curly red hair' }
+  , { name: 'Pieter', gender: 'M', voice_id: 1, appearance: 'tall thin man in his 60s with silver hair and glasses' }
+  , { name: 'Emma', gender: 'F', voice_id: 0, appearance: 'middle-aged woman in her 40s with long dark braids' }
+  , { name: 'Lars', gender: 'M', voice_id: 1, appearance: 'stocky young man in his late 20s with a shaved head and beard' }
+  , { name: 'Sophie', gender: 'F', voice_id: 0, appearance: 'elderly woman in her 70s with white hair in a bun' }
+  , { name: 'Hendrik', gender: 'M', voice_id: 1, appearance: 'man in his 50s with a mustache and receding hairline' }
+  , { name: 'Anna', gender: 'F', voice_id: 0, appearance: 'teenage girl around 18 with blonde ponytail' }
+  , { name: 'David', gender: 'M', voice_id: 1, appearance: 'athletic man in his mid-30s with dark curly hair' }
 ];
 
 // ============================================================================
