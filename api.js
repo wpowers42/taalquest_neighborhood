@@ -284,10 +284,7 @@ Style: Hand-painted warmth, gentle linework, muted earthy palette with pops of o
     }
 
     const data = await response.json();
-    const imageUrl = data.data[0].url;
-
-    // Fetch the image and convert to blob URL for local use
-    const imageResponse = await fetch(imageUrl);
-    const imageBlob = await imageResponse.blob();
-    return URL.createObjectURL(imageBlob);
+    // Return the URL directly - img tags can load cross-origin images without CORS issues
+    // Note: These URLs expire after ~1 hour, but that's fine for immediate display
+    return data.data[0].url;
 }

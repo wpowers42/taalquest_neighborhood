@@ -218,14 +218,7 @@ function clearAudioUrls() {
 }
 
 function clearSceneImage() {
-    if (state.currentSceneImageUrl) {
-        try {
-            URL.revokeObjectURL(state.currentSceneImageUrl);
-        } catch (e) {
-            // Ignore errors
-        }
-        state.currentSceneImageUrl = null;
-    }
+    state.currentSceneImageUrl = null;
     elements.sceneImageContainer.style.display = 'none';
     elements.sceneImage.src = '';
     elements.scenarioIcon.style.display = 'block';
