@@ -98,7 +98,8 @@ async function generateAudio(text, voiceId) {
             model: MODELS.TTS,
             voice: voice,
             input: text,
-            response_format: RESPONSE_FORMATS.MP3
+            response_format: RESPONSE_FORMATS.MP3,
+            speed: AUDIO.TTS_SPEED
         })
     });
 
@@ -154,17 +155,12 @@ async function generateNewScenario() {
 
         state.currentScript = script;
 
-        // Generate audio for each line
-        elements.statusMessage.textContent = 'Generating audio...';
-        const audioUrls = [];
+        // Generate audio for all lines in parallel
+        elements.statusMessage.textContent = `Generating audio for ${script.dialogue.length} lines...`;
 
-        for (let i = 0; i < script.dialogue.length; i++) {
-            const line = script.dialogue[i];
-            elements.statusMessage.textContent = `Generating audio (${i + 1}/${script.dialogue.length})...`;
-
-            const audioUrl = await generateAudio(line.text, line.voice_id);
-            audioUrls.push(audioUrl);
-        }
+        const audioUrls = await Promise.all(
+            script.dialogue.map(line => generateAudio(line.text, line.voice_id))
+        );
 
         state.currentAudioUrls = audioUrls;
 

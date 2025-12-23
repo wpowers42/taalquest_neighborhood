@@ -50,12 +50,13 @@ export const API_KEY_PREFIX = 'sk-';
 
 export const AUDIO = {
     PAUSE_BETWEEN_LINES_MS: 500
+  , TTS_SPEED: 0.90
 };
 
 // Voice mapping for TTS (OpenAI voices)
 export const VOICE_MAP = {
-    0: 'alloy'  // Female-sounding
-  , 1: 'echo'   // Male-sounding
+    0: 'fable'  // Female
+  , 1: 'ash'    // Male
 };
 
 // ============================================================================
