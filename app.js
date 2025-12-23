@@ -3,6 +3,8 @@
  * Frontend-only application using OpenAI API directly
  */
 
+import { generateScenario, generateScript } from './api.js';
+
 // ============================================================================
 // CONFIGURATION
 // ============================================================================
@@ -96,67 +98,6 @@ async function validateApiKey(key) {
 // OPENAI API CALLS
 // ============================================================================
 
-async function generateScript(char1, char2) {
-    const prompt = `You are a Dutch language teacher creating A1 level dialogues.
-
-Generate a natural 15-30 second dialogue between ${char1.name} and ${char2.name}, plus 4 comprehension questions.
-
-Requirements for dialogue:
-- A1 Dutch level (CEFR A1 - beginner)
-- Use EXACTLY these 2 character names: ${char1.name} and ${char2.name}
-- 4-8 lines total
-- Common everyday situations (ordering coffee, shopping, meeting friends, asking directions, etc.)
-- Simple present tense, basic vocabulary
-- Natural but slow-paced conversation
-- Include English translation for each dialogue line
-
-Requirements for questions:
-- 4 multiple-choice questions testing comprehension
-- Questions in English (for A1 learners)
-- First 3 questions: Test basic details (who, what, where, how much)
-- Last question: Slightly more challenging inference
-- 4 answer options each (A, B, C, D)
-- Mark the correct answer (0-3 index)
-
-Return ONLY valid JSON:
-{
-  "situation": "brief scenario description in English",
-  "characters": ["${char1.name}", "${char2.name}"],
-  "dialogue": [
-    {"speaker": "${char1.name}", "text": "Dutch text here", "translation": "English translation here", "voice_id": ${char1.voice_id}},
-    {"speaker": "${char2.name}", "text": "Dutch text here", "translation": "English translation here", "voice_id": ${char2.voice_id}}
-  ],
-  "questions": [
-    {
-      "question": "What did ${char1.name} ask for?",
-      "options": ["Option A", "Option B", "Option C", "Option D"],
-      "correct_answer": 0
-    }
-  ]
-}`;
-
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${state.apiKey}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            model: 'gpt-4.1-mini',
-            messages: [{ role: 'user', content: prompt }],
-            response_format: { type: 'json_object' }
-        })
-    });
-
-    if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error?.message || 'Script generation failed');
-    }
-
-    const data = await response.json();
-    return JSON.parse(data.choices[0].message.content);
-}
-
 async function generateAudio(text, voiceId) {
     const voice = VOICE_MAP[voiceId] || VOICE_MAP[0];
 
@@ -214,9 +155,14 @@ async function generateNewScenario() {
         const [char1, char2] = selectRandomCharacters();
         console.log(`Selected characters: ${char1.name} and ${char2.name}`);
 
-        // Generate script
-        elements.statusMessage.textContent = 'Creating dialogue...';
-        const script = await generateScript(char1, char2);
+        // Generate rich scenario description
+        elements.statusMessage.textContent = 'Imagining scenario...';
+        const scenario = await generateScenario(state.apiKey, char1.name, char2.name);
+        console.log('Scenario generated:', scenario);
+
+        // Generate script based on scenario (two-stage: outline then dialogue)
+        elements.statusMessage.textContent = 'Planning conversation...';
+        const script = await generateScript(state.apiKey, char1, char2, scenario.scenario_description);
         console.log('Script generated:', script);
 
         state.currentScript = script;
