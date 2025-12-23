@@ -194,6 +194,8 @@ async function generateNewScenario() {
               , scenario.setting_type
               , scenario.mood
               , scenario.scenario_description
+              , char1
+              , char2
             ).catch(err => {
                 console.warn('Scene image generation failed:', err);
                 return null;  // Non-fatal: continue without image
@@ -255,6 +257,9 @@ function clearSceneImage() {
  * Generate a scenario in the background and cache it
  */
 async function generateAndCacheScenario() {
+    // DISABLED: Caching temporarily disabled for testing prompt changes
+    return;
+
     if (state.isBackgroundGenerating || !state.apiKey) {
         return;
     }
@@ -295,7 +300,9 @@ async function generateAndCacheScenario() {
                 state.apiKey,
                 scenario.setting_type,
                 scenario.mood,
-                scenario.scenario_description
+                scenario.scenario_description,
+                char1,
+                char2
             ).catch(err => {
                 console.warn('[Background] Scene image generation failed:', err);
                 return null;
@@ -342,6 +349,9 @@ async function generateAndCacheScenario() {
  * @returns {Promise<boolean>} True if loaded from cache, false otherwise
  */
 async function loadFromCache() {
+    // DISABLED: Caching temporarily disabled for testing prompt changes
+    return false;
+
     try {
         const cached = await getCachedScenario();
 

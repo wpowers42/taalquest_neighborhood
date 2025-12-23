@@ -17,18 +17,52 @@ Generate a rich, realistic everyday scenario that someone living in Utrecht, Net
 
 Create ONE scenario involving exactly two people: ${char1Name} and ${char2Name}.
 
-Consider the full range of daily life situations:
-- School drop-offs, parent interactions, teacher meetings
-- Neighborhood encounters (new neighbor, borrowed item, noise complaint, shared garden)
-- Home situations (plumber visit, package delivery, discussing weekend plans)
-- Fitness and wellness (gym conversation, running into someone at yoga, bike repair shop)
-- Cafes and restaurants (ordering, small talk with barista/server, running into an acquaintance)
-- Shopping (market vendor, boutique shop, returning an item)
-- Travel and commuting (train delays, asking for directions, bike parking)
-- Professional contexts (quick chat with colleague, building receptionist)
-- Social situations (planning a playdate, discussing a neighborhood event, book club)
-- Services (hairdresser, doctor's receptionist, bank clerk)
-- Seasonal events (King's Day preparation, Sinterklaas shopping, summer terrace)
+CRITICAL: You MUST choose from the FULL range of situations below. DO NOT default to markets, gardens, or cafes. Pick something UNEXPECTED:
+
+INDOOR SETTINGS:
+- Waiting room (huisarts, tandarts, apotheek, gemeente)
+- Library (studying, returning late book, kids' section)
+- Museum (Centraal Museum, Miffy Museum, discussing an exhibit)
+- Swimming pool (zwembad) changing room or poolside
+- Bowling alley, escape room lobby, cinema queue
+- Apartment building hallway, elevator, laundry room
+- Bakery (ordering bread, birthday cake pickup)
+- Hardware store (Gamma, Praxis - asking for help)
+- Clothing store fitting room area
+- Pet store, plant nursery (tuincentrum)
+- Music lesson waiting area, dance studio
+
+OUTDOOR SETTINGS:
+- Playground (speeltuin) - parents watching kids
+- Dog park (hondenuitlaatplaats)
+- Football field sidelines (kids' match)
+- Boat rental at Oudegracht
+- Flea market or kringloopwinkel
+- Moving day (someone loading a van)
+- Stuck in rain under an awning together
+- Flat tire situation (fiets or car)
+- Lost tourist asking for help
+- Food truck queue at a festival
+- Picking up kids from swimming lessons
+- Outside school gates waiting
+
+TRANSACTIONAL:
+- Returning something that doesn't fit
+- Complaining about a wrong order (politely)
+- Asking if someone dropped something
+- Warning about parking enforcement nearby
+- Discussing a power outage in the building
+- Coordinating trash bin placement
+- Exchanging contact info after a fender bender
+
+UNEXPECTED MOMENTS:
+- Recognizing someone from long ago
+- Awkward elevator silence breaker
+- Overhearing and relating to someone's phone call
+- Both reaching for the last item on a shelf
+- One person's kid causing minor chaos
+- Dealing with a wasp at an outdoor table
+- Phone dying, asking to borrow a charger
 
 Write a vivid paragraph (4-6 sentences) describing:
 1. THE SETTING: Where exactly are they? What time of day? What's the atmosphere?
@@ -36,7 +70,7 @@ Write a vivid paragraph (4-6 sentences) describing:
 3. THE DYNAMIC: Is there any tension, awkwardness, excitement, or particular mood? What makes this interaction interesting?
 4. THE CONVERSATION HOOK: What brings them to speak? What might they discuss?
 
-Be creative and specific. Avoid generic "ordering coffee" scenarios. Make it feel like a real slice of Dutch life with texture and personality.`;
+Be creative and SPECIFIC. AVOID: generic coffee ordering, farmers markets, gardens, and bike shops (overused). Make it feel like a real slice of Dutch life with texture and personality.`;
 
     const creativeResponse = await fetch(`${API.BASE_URL}${API.ENDPOINTS.CHAT_COMPLETIONS}`, {
         method: 'POST',
@@ -262,16 +296,31 @@ export async function generateScript(apiKey, char1, char2, scenarioDescription) 
  * Generate a scene illustration for the scenario.
  * Returns a blob URL for the generated image.
  */
-export async function generateSceneImage(apiKey, settingType, mood, scenarioDescription) {
+export async function generateSceneImage(apiKey, settingType, mood, scenarioDescription, char1, char2) {
     // Build a prompt for New Yorker cartoon style scene illustrations
-    const prompt = `New Yorker magazine cartoon style illustration, single-panel editorial cartoon, no text, no captions, no speech bubbles.
+    const characterDesc = char1 && char2
+        ? `\n\nCharacters: ${char1.name} (${char1.appearance}) and ${char2.name} (${char2.appearance}). Show these two specific people interacting.`
+        : '';
 
-Scene details: ${scenarioDescription}
+    const prompt = `STYLE REQUIREMENTS (MANDATORY):
+- Classic New Yorker magazine single-panel cartoon
+- Hand-drawn ink linework with confident, flowing strokes
+- Watercolor wash with MUTED, LIMITED palette (2-3 colors max plus black ink)
+- NO photorealism, NO digital polish, NO gradients
+- NO text, NO captions, NO speech bubbles, NO words of any kind
 
-Setting type: ${settingType}
-Mood: ${mood}
+SCENE: ${scenarioDescription}${characterDesc}
 
-Style: Clean confident ink linework, sophisticated observational humor, expressive character faces and body language that tell the story. Subtle watercolor wash or limited color palette. Focus on the specific moment and interaction between the two characters. Capture the particular details mentioned in the scene - the objects, environment, and what makes this moment unique. Dutch urban setting with bicycles, brick buildings, or canal-side atmosphere as appropriate to the scene.`;
+Setting: ${settingType} | Mood: ${mood}
+
+ARTISTIC DIRECTION:
+The illustration MUST look like it belongs in the pages of The New Yorker. Think William Steig, Roz Chast, or Edward Koren. Emphasize:
+- Loose, expressive linework (not tight or mechanical)
+- Characters with personality shown through posture and gesture
+- Subtle wit in the scene composition
+- Elegant simplicity - suggest details rather than rendering everything
+- Cream/off-white paper background visible through watercolor washes
+- Dutch urban elements (bicycles, brick, canals) rendered with the same loose editorial style`;
 
 
     const response = await fetch(`${API.BASE_URL}${API.ENDPOINTS.IMAGES_GENERATIONS}`, {
