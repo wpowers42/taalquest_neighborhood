@@ -284,7 +284,10 @@ Style: Hand-painted warmth, gentle linework, muted earthy palette with pops of o
     }
 
     const data = await response.json();
-    // Return the URL directly - img tags can load cross-origin images without CORS issues
-    // Note: These URLs expire after ~1 hour, but that's fine for immediate display
+    // gpt-image models return b64_json, convert to data URL for img tag
+    if (data.data[0].b64_json) {
+        return `data:image/png;base64,${data.data[0].b64_json}`;
+    }
+    // Fallback for models that return URL (e.g., dall-e-3)
     return data.data[0].url;
 }

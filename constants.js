@@ -20,12 +20,12 @@ export const API = {
 export const MODELS = {
     CHAT: 'gpt-4.1-mini'
   , TTS: 'gpt-4o-mini-tts'
-  , IMAGE: 'dall-e-3'  // Use gpt-image-1-mini once org is verified
+  , IMAGE: 'gpt-image-1.5'
 };
 
 export const IMAGE_CONFIG = {
     SIZE: '1024x1024'
-  , QUALITY: 'standard'  // 'standard' ($0.04) or 'hd' ($0.08)
+  , QUALITY: 'low'  // 'low' (~$0.017), 'medium' (~$0.05), 'high' (~$0.15)
 };
 
 export const RESPONSE_FORMATS = {
