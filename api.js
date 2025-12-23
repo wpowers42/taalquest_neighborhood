@@ -252,16 +252,16 @@ export async function generateScript(apiKey, char1, char2, scenarioDescription) 
  * Returns a blob URL for the generated image.
  */
 export async function generateSceneImage(apiKey, settingType, mood, scenarioDescription) {
-    // Build a prompt optimized for Ghibli-style Utrecht scenes
-    const prompt = `Studio Ghibli-inspired illustration, warm watercolor comic panel style, no text or speech bubbles.
+    // Build a prompt for New Yorker cartoon style scene illustrations
+    const prompt = `New Yorker magazine cartoon style illustration, single-panel editorial cartoon, no text, no captions, no speech bubbles.
 
-Scene: ${scenarioDescription}
+Scene details: ${scenarioDescription}
 
-Setting: ${settingType} in Utrecht, Netherlands. Dutch architectural details visible - brick row houses, bicycles, canal glimpses, cobblestone streets, Dom Tower in the distance.
+Setting type: ${settingType}
+Mood: ${mood}
 
-Atmosphere: ${mood}, soft natural light.
+Style: Clean confident ink linework, sophisticated observational humor, expressive character faces and body language that tell the story. Subtle watercolor wash or limited color palette. Focus on the specific moment and interaction between the two characters. Capture the particular details mentioned in the scene - the objects, environment, and what makes this moment unique. Dutch urban setting with bicycles, brick buildings, or canal-side atmosphere as appropriate to the scene.`;
 
-Style: Hand-painted warmth, gentle linework, muted earthy palette with pops of orange and blue (Dutch colors), cozy and inviting like a Ghibli background painting. Wordless storytelling through body language and expressions. Two characters in mid-conversation.`;
 
     const response = await fetch(`${API.BASE_URL}${API.ENDPOINTS.IMAGES_GENERATIONS}`, {
         method: 'POST'
